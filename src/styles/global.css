@@ -1,0 +1,22 @@
+/* Reset básico */
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Evitar scroll global */
+body {
+    overflow: hidden;
+}
+
+/* Imágenes globales */
+.fondo-global {
+    width: 100%;
+    height: 100vh;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
