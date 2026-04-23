@@ -1,35 +1,43 @@
 import { useNavigate } from 'react-router-dom';
 import fondoHabitacion from '../assets/habitacion.png';
 
-function Habitacion() {
+function Habitacion({ hotspots, unlockedHotspotIds, visitedHotspots }) {
 
     const navigate = useNavigate();
+    const unlockedSet = new Set(unlockedHotspotIds);
+    const visitedSet = new Set(visitedHotspots);
 
     return (
         <div className="fondo-global"
             style={{
                 backgroundImage: `url(${fondoHabitacion})`,
             }}>
-            <div className='hotspot-habitacion'
-                onClick={() => navigate('/puerta')}
-                style={{ top: "18%", left: "53%", }}
+            <button
+                type="button"
+                className="scene-menu-button"
+                onClick={() => navigate('/')}
             >
-            </div>
-            <div className='hotspot-habitacion'
-                onClick={() => navigate('/computadora')}
-                style={{ top: "51%", left: "93%", }}
-            >
-            </div>
-            <div className='hotspot-habitacion'
-                onClick={() => navigate('/mural')}
-                style={{ top: "94%", left: "44%", }}
-            >
-            </div>
-            <div className='hotspot-habitacion'
-                onClick={() => navigate('/cama')}
-                style={{ top: "50%", left: "23%", }}
-            >
-            </div>
+                Menú Principal
+            </button>
+            {hotspots.map((hotspot) => {
+                const isUnlocked = unlockedSet.has(hotspot.id);
+                const isVisited = visitedSet.has(hotspot.id);
+
+                return (
+                    <button
+                        key={hotspot.id}
+                        type="button"
+                        className={`hotspot-habitacion ${isUnlocked ? 'hotspot-habitacion--active' : 'hotspot-habitacion--locked'} ${isVisited ? 'hotspot-habitacion--visited' : ''}`}
+                        onClick={() => {
+                            if (isUnlocked) {
+                                navigate(hotspot.route);
+                            }
+                        }}
+                        style={{ top: hotspot.top, left: hotspot.left }}
+                        aria-label={hotspot.id}
+                    />
+                );
+            })}
 
         </div>
 
