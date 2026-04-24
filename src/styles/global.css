@@ -145,6 +145,7 @@ button {
     background: rgba(0, 0, 0, 0.72);
     color: white;
     font-family: "play", sans-serif;
+    font-size: 1.25rem;
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
