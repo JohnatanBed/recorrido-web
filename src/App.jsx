@@ -27,7 +27,15 @@ function App() {
       maxUnlockedIndex += 1;
     }
 
-    return HOTSPOTS.slice(0, maxUnlockedIndex + 1).map((hotspot) => hotspot.id);
+    const unlockedHotspots = new Set(
+      HOTSPOTS.slice(0, maxUnlockedIndex + 1).map((hotspot) => hotspot.id)
+    );
+
+    visitedHotspots.forEach((hotspotId) => {
+      unlockedHotspots.add(hotspotId);
+    });
+
+    return Array.from(unlockedHotspots);
   }, [visitedHotspots]);
 
   const handleVisitHotspot = (hotspotId) => {
