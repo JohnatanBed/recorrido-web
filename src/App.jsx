@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from './pages/Home';
 import Habitacion from './pages/Habitación';
@@ -17,26 +17,7 @@ const HOTSPOTS = [
 function App() {
   const [visitedHotspots, setVisitedHotspots] = useState([]);
 
-  const unlockedHotspotIds = useMemo(() => {
-    let maxUnlockedIndex = 0;
-
-    while (
-      maxUnlockedIndex < HOTSPOTS.length - 1 &&
-      visitedHotspots.includes(HOTSPOTS[maxUnlockedIndex].id)
-    ) {
-      maxUnlockedIndex += 1;
-    }
-
-    const unlockedHotspots = new Set(
-      HOTSPOTS.slice(0, maxUnlockedIndex + 1).map((hotspot) => hotspot.id)
-    );
-
-    visitedHotspots.forEach((hotspotId) => {
-      unlockedHotspots.add(hotspotId);
-    });
-
-    return Array.from(unlockedHotspots);
-  }, [visitedHotspots]);
+  const unlockedHotspotIds = HOTSPOTS.map((hotspot) => hotspot.id);
 
   const handleVisitHotspot = (hotspotId) => {
     setVisitedHotspots((previousVisited) => {
