@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=monserrat:wght@400;700&display=swap');
 
 /* Reset básico */
 html,
@@ -269,8 +269,8 @@ button {
     font-family: "Play", sans-serif;
     font-size: 1rem;
     line-height: 1.25;
-    width: 230px;
-    max-width: 250px;
+    width: 260px;
+    max-width: 300px;
     text-align: justify;
     text-justify: inter-word;
     hyphens: auto;
