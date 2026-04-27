@@ -29,6 +29,23 @@ const SECONDARY_HOTSPOTS = [
     },
 ];
 
+const MESSAGE_LAYOUTS = [
+    { top: '6%', left: '6%', rotate: '-3deg' },
+    { top: '8%', left: '38%', rotate: '2deg' },
+    { top: '5%', left: '68%', rotate: '-2deg' },
+    { top: '26%', left: '10%', rotate: '1deg' },
+    { top: '28%', left: '42%', rotate: '-1deg' },
+    { top: '25%', left: '74%', rotate: '3deg' },
+    { top: '52%', left: '5%', rotate: '-2deg' },
+    { top: '50%', left: '33%', rotate: '2deg' },
+    { top: '54%', left: '67%', rotate: '-1deg' },
+    { top: '76%', left: '14%', rotate: '2deg' },
+    { top: '74%', left: '46%', rotate: '-3deg' },
+    { top: '78%', left: '74%', rotate: '1deg' },
+];
+
+const getNotaLayout = (index) => MESSAGE_LAYOUTS[index % MESSAGE_LAYOUTS.length];
+
 function Mural({ onVisit }) {
     const navigate = useNavigate();
     const [fase, setFase] = useState('principal');
@@ -215,11 +232,38 @@ function Mural({ onVisit }) {
                 </div>
             )}
 
-            {fase === 'secundarios' && muralLimpioActivado && (
+            {fase === 'secundarios' && muralLimpioActivado && !mostrarMensajeMuralLimpio && (
                 <div className="mural-board">
-                    <div className="mural-board__header">
-                        <h2 className="mural-board__title">Pizarrón público</h2>
-                        <p className="mural-board__subtitle">Deja una nota adhesiva para quien llegue después.</p>
+                    <div className="mural-board__notes">
+                        {cargandoNotas ? (
+                            <p className="mural-board__status">Cargando notas...</p>
+                        ) : notas.length === 0 ? (
+                            <p className="mural-board__status">Aún no hay notas en el pizarrón.</p>
+                        ) : (
+                            notas.map((nota, index) => {
+                                const layout = getNotaLayout(index);
+
+                                return (
+                                <article
+                                    key={nota.id}
+                                    className="mural-message"
+                                    style={{
+                                        top: layout.top,
+                                        left: layout.left,
+                                        transform: `rotate(${layout.rotate})`,
+                                    }}
+                                >
+                                    <p className="mural-message__text">{nota.text}</p>
+                                    <time className="mural-message__time" dateTime={nota.created_at}>
+                                        {new Date(nota.created_at).toLocaleString('es-MX', {
+                                            dateStyle: 'short',
+                                            timeStyle: 'short',
+                                        })}
+                                    </time>
+                                </article>
+                                );
+                            })
+                        )}
                     </div>
 
                     <form className="mural-board__form" onSubmit={manejarEnvioNota}>
@@ -232,7 +276,7 @@ function Mural({ onVisit }) {
                             rows={3}
                         />
                         <div className="mural-board__form-footer">
-                            <span className="mural-board__counter">{nuevaNota.length}/180</span>
+                            <span className="mural-board__counter">{nuevaNota.length}/80</span>
                             <button
                                 type="submit"
                                 className="mural-board__submit"
@@ -244,30 +288,6 @@ function Mural({ onVisit }) {
                     </form>
 
                     {errorNotas && <p className="mural-board__error">{errorNotas}</p>}
-
-                    <div className="mural-board__notes">
-                        {cargandoNotas ? (
-                            <p className="mural-board__status">Cargando notas...</p>
-                        ) : notas.length === 0 ? (
-                            <p className="mural-board__status">Aún no hay notas en el pizarrón.</p>
-                        ) : (
-                            notas.map((nota, index) => (
-                                <article
-                                    key={nota.id}
-                                    className={`mural-sticky mural-sticky--${(index % 4) + 1}`}
-                                    style={{ transform: `rotate(${(index % 5) - 2}deg)` }}
-                                >
-                                    <p className="mural-sticky__text">{nota.text}</p>
-                                    <time className="mural-sticky__time" dateTime={nota.created_at}>
-                                        {new Date(nota.created_at).toLocaleString('es-MX', {
-                                            dateStyle: 'short',
-                                            timeStyle: 'short',
-                                        })}
-                                    </time>
-                                </article>
-                            ))
-                        )}
-                    </div>
                 </div>
             )}
 
