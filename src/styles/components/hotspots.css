@@ -1,0 +1,62 @@
+/* ===== HOTSPOTS (Habitacion) ===== */
+.hotspot-habitacion {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 0;
+    color: black;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.hotspot-habitacion--active:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+}
+
+.hotspot-habitacion--locked {
+    background-color: rgba(140, 140, 140, 0.8);
+    cursor: not-allowed;
+}
+
+.hotspot-habitacion--visited {
+    /* Visited state no longer applies a green background.
+       Keep the class for semantic/JS checks but do not change appearance. */
+}
+
+/* ===== HOTSPOT CAMA ===== */
+.hotspot-cama {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.hotspot-cama:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+}
+
+/* ===== HOTSPOT MURAL ===== */
+.hotspot-mural {
+    top: 66%;
+    left: 19%;
+    position: absolute;
+    background-color: white;
+    width: 18px;
+    height: 18px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.hotspot-mural:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+}
