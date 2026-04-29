@@ -1,7 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function SceneContainer({ backgroundImage, children, onBackClick = null }) {
     const navigate = useNavigate();
+
+    const { pathname } = useLocation();
 
     const handleBack = () => {
         if (onBackClick) {
@@ -18,13 +20,15 @@ function SceneContainer({ backgroundImage, children, onBackClick = null }) {
                 backgroundImage: `url(${backgroundImage})`,
             }}
         >
-            <button
-                type="button"
-                className="scene-back-button"
-                onClick={handleBack}
-            >
-                Volver
-            </button>
+            {pathname !== '/habitacion' && (
+                <button
+                    type="button"
+                    className="scene-back-button"
+                    onClick={handleBack}
+                >
+                    Volver
+                </button>
+            )}
             {children}
         </div>
     );

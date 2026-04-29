@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export function useSlideViewer(slides) {
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    const handleNextSlide = () => {
+    const handleNextSlide = useCallback(() => {
         setCurrentSlide((prev) => Math.min(slides.length - 1, prev + 1));
-    };
+    }, [slides.length]);
 
-    const handlePrevSlide = () => {
+    const handlePrevSlide = useCallback(() => {
         setCurrentSlide((prev) => Math.max(0, prev - 1));
-    };
+    }, []);
 
-    const resetSlide = () => {
+    const resetSlide = useCallback(() => {
         setCurrentSlide(0);
-    };
+    }, []);
 
     return {
         currentSlide,

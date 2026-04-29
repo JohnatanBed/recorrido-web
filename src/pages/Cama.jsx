@@ -19,7 +19,7 @@ function Cama({ onVisit }) {
                 position={{ top: '29%', left: '53.5%' }}
                 onClick={() => setOpenSlides(true)}
                 ariaLabel="hotspot-cama"
-                title="Haz clic para ver los slides"
+                title="Revista"
             />
             <SlideViewer
                 slides={SLIDES}
