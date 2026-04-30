@@ -40,3 +40,52 @@
     background: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
 }
+
+.puerta-mensaje-overlay {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(90vw, 820px);
+    padding: 1rem 1.25rem;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(2px);
+}
+
+.puerta-mensaje-texto {
+    margin: 0;
+    color: #f7f7f7;
+    text-align: center;
+    font-family: "play", sans-serif;
+    font-size: clamp(1.1rem, 2vw, 1.7rem);
+    line-height: 1.35;
+}
+
+/* Invert colors when requested from Puerta (first hotspot) */
+body.puerta-invertido .puerta-mensaje-overlay {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+body.puerta-invertido .puerta-mensaje-texto {
+    color: #000000;
+}
+
+/* ===== HOTSPOT HABITACION ===== */
+
+.puerta-imagen-final {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    display: block;
+    background: #000000;
+}
+
+.puerta-imagen-final-wrapper {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: #000000;
+}

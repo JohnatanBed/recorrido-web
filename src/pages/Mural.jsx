@@ -4,7 +4,7 @@ import fondoMuralInicial from '../assets/mural-tableta.png';
 import fondoMuralFinal from '../assets/mural.png';
 import fondoMuralLimpio from '../assets/mural-limpio.png';
 import { supabase } from '../lib/supabaseClient';
-import { MURAL_SECONDARY_HOTSPOTS, MESSAGE_LAYOUTS, getNotaLayout } from '../constants/mural';
+import { MURAL_SECONDARY_HOTSPOTS } from '../constants/mural';
 
 function Mural({ onVisit }) {
     const navigate = useNavigate();
@@ -166,7 +166,7 @@ function Mural({ onVisit }) {
                 </div>
             )}
 
-            {fase === 'secundarios' && !todosLosHotspotsExplorados && MURAL_SECONDARY_HOTSPOTS.map((hotspot) => (
+            {fase === 'secundarios' && !muralLimpioActivado && MURAL_SECONDARY_HOTSPOTS.map((hotspot) => (
                 <button
                     key={hotspot.id}
                     type="button"
@@ -202,17 +202,10 @@ function Mural({ onVisit }) {
                             <p className="mural-board__status">Aún no hay notas en el pizarrón.</p>
                         ) : (
                             notas.map((nota, index) => {
-                                const layout = getNotaLayout(index);
-
                                 return (
                                 <article
                                     key={nota.id}
                                     className="mural-message"
-                                    style={{
-                                        top: layout.top,
-                                        left: layout.left,
-                                        transform: `rotate(${layout.rotate})`,
-                                    }}
                                 >
                                     <p className="mural-message__text">{nota.text}</p>
                                     <time className="mural-message__time" dateTime={nota.created_at}>
@@ -233,7 +226,7 @@ function Mural({ onVisit }) {
                             value={nuevaNota}
                             onChange={(event) => setNuevaNota(event.target.value)}
                             placeholder="Escribe tu nota..."
-                            maxLength={180}
+                            maxLength={80}
                             rows={3}
                         />
                         <div className="mural-board__form-footer">
