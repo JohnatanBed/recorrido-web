@@ -233,7 +233,7 @@ function Mural({ onVisit }) {
                             value={nuevaNota}
                             onChange={(event) => setNuevaNota(event.target.value)}
                             placeholder="Escribe tu nota..."
-                            maxLength={180}
+                            maxLength={80}
                             rows={3}
                         />
                         <div className="mural-board__form-footer">
