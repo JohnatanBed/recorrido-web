@@ -4,47 +4,7 @@ import fondoMuralInicial from '../assets/mural-tableta.png';
 import fondoMuralFinal from '../assets/mural.png';
 import fondoMuralLimpio from '../assets/mural-limpio.png';
 import { supabase } from '../lib/supabaseClient';
-
-const SECONDARY_HOTSPOTS = [
-    {
-        id: 'mural-secundario-1',
-        top: '39%',
-        left: '36%',
-        message: 'No sé dónde me duele.',
-        videoUrl: 'https://www.youtube.com/embed/GqdpZaFcETw?si=yDDyZbUfRZdX8JoT',
-    },
-    {
-        id: 'mural-secundario-2',
-        top: '30%',
-        left: '51%',
-        message: 'El tiempo pasa en "un instante". Cómo desearía poder recordar.',
-        videoUrl: 'https://www.youtube.com/embed/WfGMYdalClU?si=o-OAB8SZw2KHunQ4',
-    },
-    {
-        id: 'mural-secundario-3',
-        top: '57%',
-        left: '70%',
-        message: 'Me hubiera encantado tener esa conversación con papá, pero él ya no está.',
-        videoUrl: 'https://www.youtube.com/embed/paAoB5OdJFI',
-    },
-];
-
-const MESSAGE_LAYOUTS = [
-    { top: '6%', left: '6%', rotate: '-3deg' },
-    { top: '8%', left: '38%', rotate: '2deg' },
-    { top: '5%', left: '68%', rotate: '-2deg' },
-    { top: '26%', left: '10%', rotate: '1deg' },
-    { top: '28%', left: '42%', rotate: '-1deg' },
-    { top: '25%', left: '74%', rotate: '3deg' },
-    { top: '52%', left: '5%', rotate: '-2deg' },
-    { top: '50%', left: '33%', rotate: '2deg' },
-    { top: '54%', left: '67%', rotate: '-1deg' },
-    { top: '76%', left: '14%', rotate: '2deg' },
-    { top: '74%', left: '46%', rotate: '-3deg' },
-    { top: '78%', left: '74%', rotate: '1deg' },
-];
-
-const getNotaLayout = (index) => MESSAGE_LAYOUTS[index % MESSAGE_LAYOUTS.length];
+import { MURAL_SECONDARY_HOTSPOTS, MESSAGE_LAYOUTS, getNotaLayout } from '../constants/mural';
 
 function Mural({ onVisit }) {
     const navigate = useNavigate();
@@ -60,7 +20,7 @@ function Mural({ onVisit }) {
     const [enviandoNota, setEnviandoNota] = useState(false);
     const [errorNotas, setErrorNotas] = useState('');
 
-    const todosLosHotspotsExplorados = hotspotsExplorados.size === SECONDARY_HOTSPOTS.length;
+    const todosLosHotspotsExplorados = hotspotsExplorados.size === MURAL_SECONDARY_HOTSPOTS.length;
 
     useEffect(() => {
         onVisit();
@@ -83,6 +43,7 @@ function Mural({ onVisit }) {
             return undefined;
         }
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMostrarMensajeMuralLimpio(true);
         const timeoutId = setTimeout(() => {
             setMostrarMensajeMuralLimpio(false);
@@ -205,7 +166,7 @@ function Mural({ onVisit }) {
                 </div>
             )}
 
-            {fase === 'secundarios' && !todosLosHotspotsExplorados && SECONDARY_HOTSPOTS.map((hotspot) => (
+            {fase === 'secundarios' && !todosLosHotspotsExplorados && MURAL_SECONDARY_HOTSPOTS.map((hotspot) => (
                 <button
                     key={hotspot.id}
                     type="button"

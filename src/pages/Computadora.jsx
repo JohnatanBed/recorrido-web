@@ -1,28 +1,14 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import fondoComputadora from '../assets/computadora.png';
+import SceneContainer from '../components/SceneContainer';
 
-function Computadora({ onVisit }){
-    const navigate = useNavigate();
-
+function Computadora({ onVisit }) {
     useEffect(() => {
         onVisit();
     }, [onVisit]);
 
-    return(
-        <div className="fondo-global"
-        style={{
-            backgroundImage: `url(${fondoComputadora})`,
-        }}
-        >
-            <button
-                type="button"
-                className="scene-back-button"
-                onClick={() => navigate('/habitacion')}
-            >
-                Volver
-            </button>
-        </div>
+    return (
+        <SceneContainer backgroundImage={fondoComputadora} />
     );
 }
 

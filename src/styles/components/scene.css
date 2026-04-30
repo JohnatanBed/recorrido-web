@@ -1,0 +1,42 @@
+/* ===== SCENE BUTTONS (comunes a todas las escenas) ===== */
+.scene-back-button {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    background: rgba(0, 0, 0, 0.72);
+    color: white;
+    font-family: "play", sans-serif;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.scene-back-button:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+}
+
+.scene-menu-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 2;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    background: rgba(0, 0, 0, 0.88);
+    color: #ffffff;
+    font-family: "play", sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.scene-menu-button:hover {
+    transform: translateY(-1px);
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+}
