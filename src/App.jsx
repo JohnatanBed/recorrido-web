@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useMemo, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Habitacion from './pages/Habitación';
 import Computadora from './pages/Computadora';
@@ -7,9 +7,30 @@ import Mural from './pages/Mural';
 import Cama from './pages/Cama';
 import Puerta from './pages/Puerta';
 import { HOTSPOTS } from './constants/hotspots';
+import useImagePreload from './hooks/useImagePreload';
+import fondoHabitacion from './assets/habitacion.png';
+import fondoComputadora from './assets/computadora.png';
+import fondoMuralInicial from './assets/mural-tableta.png';
+import fondoMuralFinal from './assets/mural.png';
+import fondoMuralLimpio from './assets/mural-limpio.png';
+import fondoCama from './assets/cama.png';
+import fondoPuerta from './assets/puerta.png';
 
 function App() {
   const [visitedHotspots, setVisitedHotspots] = useState([]);
+  const criticalSceneAssets = useMemo(
+    () => [
+      fondoHabitacion,
+      fondoComputadora,
+      fondoMuralInicial,
+      fondoMuralFinal,
+      fondoMuralLimpio,
+      fondoCama,
+      fondoPuerta,
+    ],
+    []
+  );
+  const isAssetsReady = useImagePreload(criticalSceneAssets);
 
   const unlockedHotspotIds = HOTSPOTS.map((hotspot) => hotspot.id);
 
@@ -22,6 +43,10 @@ function App() {
       return [...previousVisited, hotspotId];
     });
   };
+
+  if (!isAssetsReady) {
+    return <div className="app-loader">Cargando escena...</div>;
+  }
 
   return (
     <Routes>
@@ -48,6 +73,6 @@ function App() {
       />
     </Routes>
   );
-};
+}
 
 export default App;

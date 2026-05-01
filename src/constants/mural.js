@@ -10,15 +10,17 @@ export const MURAL_SECONDARY_HOTSPOTS = [
         id: 'mural-secundario-2',
         top: '30%',
         left: '51%',
-        message: 'El tiempo pasa en "un instante". Cómo desearía poder recordar.',
-        videoUrl: 'https://www.youtube.com/embed/Nvtiku_XXTU?si=L4jMcWq8VEC9hULO',
+        message: 'Me hubiera encantado tener esa conversación con papá, pero él ya no está.',
+        videoUrl: 'https://www.youtube.com/embed/onQKlbU0TAo?si=GBIdRKQnxfN6_xD9',
+
     },
     {
         id: 'mural-secundario-3',
         top: '57%',
         left: '70%',
-        message: 'Me hubiera encantado tener esa conversación con papá, pero él ya no está.',
-        videoUrl: 'https://www.youtube.com/embed/onQKlbU0TAo?si=GBIdRKQnxfN6_xD9',
+        message: 'El tiempo pasa en "un instante". Cómo desearía poder recordar.',
+        videoUrl: 'https://www.youtube.com/embed/Nvtiku_XXTU?si=L4jMcWq8VEC9hULO',
+
     },
 ];
 
