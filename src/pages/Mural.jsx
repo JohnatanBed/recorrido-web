@@ -161,7 +161,7 @@ function Mural({ onVisit }) {
                 <div
                     className="mural-dialog"
                 >
-                    Las palabras pesan demasiado y los pensamientos no logran irsen,
+                    Las palabras pesan demasiado y los pensamientos no logran irse,
                     pero hay algo en esto que hace que todo sea más fácil.
                 </div>
             )}
@@ -189,7 +189,7 @@ function Mural({ onVisit }) {
 
             {fase === 'secundarios' && muralLimpioActivado && mostrarMensajeMuralLimpio && (
                 <div className="mural-clean-message">
-                    ¿Y tú cómo sacas al mundo todo eso que llevas dentro?
+                    Y tú, ¿cómo sacas al mundo todo eso que llevas dentro?
                 </div>
             )}
 
