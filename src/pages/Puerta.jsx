@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import fondoPuerta from '../assets/puerta.png';
 import SceneContainer from '../components/SceneContainer';
@@ -9,8 +9,6 @@ const MENSAJES_PUERTA = [
     'Por favor, ayudame, por favor.',
 ];
 
-const DURACION_MENSAJES_HOTSPOT = 5000;
-
 function Puerta({ onVisit }) {
     const navigate = useNavigate();
     const [mensajeActivo, setMensajeActivo] = useState(MENSAJES_PUERTA[0]);
@@ -19,72 +17,11 @@ function Puerta({ onVisit }) {
     const [secuenciaIniciada, setSecuenciaIniciada] = useState(false);
     const [mostrarImagenFinal, setMostrarImagenFinal] = useState(false);
     const [mensajeSegundoHotspot, setMensajeSegundoHotspot] = useState('');
-    const timeoutsRef = useRef([]);
     const [invertirColores, setInvertirColores] = useState(false);
 
     useEffect(() => {
         onVisit();
     }, [onVisit]);
-
-    useEffect(() => {
-        const primerCambio = setTimeout(() => {
-            setMensajeActivo(MENSAJES_PUERTA[1]);
-        }, 10000);
-
-        const ocultarMensajes = setTimeout(() => {
-            setMensajeActivo('');
-            setMostrarHotspots(true);
-        }, 20000);
-
-        return () => {
-            clearTimeout(primerCambio);
-            clearTimeout(ocultarMensajes);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!secuenciaIniciada) {
-            return undefined;
-        }
-
-        setMensajeHotspot('Gracias.');
-
-        const segundoMensaje = setTimeout(() => {
-            setMensajeHotspot('Ahora sé que no estoy sola.');
-        }, DURACION_MENSAJES_HOTSPOT);
-
-        const ocultarMensaje = setTimeout(() => {
-            setMensajeHotspot('');
-        }, DURACION_MENSAJES_HOTSPOT * 2);
-
-        const mostrarImagen = setTimeout(() => {
-            setMostrarImagenFinal(true);
-        }, DURACION_MENSAJES_HOTSPOT * 2 + 500);
-
-        return () => {
-            clearTimeout(segundoMensaje);
-            clearTimeout(ocultarMensaje);
-            clearTimeout(mostrarImagen);
-        };
-    }, [secuenciaIniciada]);
-
-    useEffect(() => {
-        return () => {
-            // Clear any timeouts created by segundo hotspot handler on unmount
-            timeoutsRef.current.forEach((id) => clearTimeout(id));
-            timeoutsRef.current = [];
-        };
-    }, []);
-
-    const handlePrimerHotspotClick = () => {
-        if (secuenciaIniciada) {
-            return;
-        }
-
-        // invertir colores al hacer click
-        setInvertirColores(true);
-        setSecuenciaIniciada(true);
-    };
 
     useEffect(() => {
         if (invertirColores) {
@@ -98,27 +35,50 @@ function Puerta({ onVisit }) {
         };
     }, [invertirColores]);
 
-    const mensajeVisible = mensajeActivo || mensajeHotspot || mensajeSegundoHotspot;
+    const cerrarMensajeInicial = () => {
+        if (mensajeActivo === MENSAJES_PUERTA[0]) {
+            setMensajeActivo(MENSAJES_PUERTA[1]);
+            return;
+        }
 
-    const handleSegundoHotspotClick = () => {
-        // start sequence: show '...' then next message then redirect
-        setMensajeSegundoHotspot('...');
-        // hide other hotspots while sequence runs
-        setMostrarHotspots(false);
-
-        const t1 = setTimeout(() => {
-            setMensajeSegundoHotspot('¿No entendiste el juego, verdad?');
-        }, DURACION_MENSAJES_HOTSPOT);
-
-        const t2 = setTimeout(() => {
-            setMensajeSegundoHotspot('');
-            navigate('/');
-        }, DURACION_MENSAJES_HOTSPOT * 2 + 200);
-
-        timeoutsRef.current.push(t1, t2);
+        setMensajeActivo('');
+        setMostrarHotspots(true);
     };
 
-    const mensajeVisibleFinal = mensajeVisible || mensajeSegundoHotspot;
+    const handlePrimerHotspotClick = () => {
+        if (secuenciaIniciada) {
+            return;
+        }
+
+        setInvertirColores(true);
+        setSecuenciaIniciada(true);
+        setMensajeHotspot('Gracias.');
+    };
+
+    const cerrarMensajePrimerHotspot = () => {
+        if (mensajeHotspot === 'Gracias.') {
+            setMensajeHotspot('Ahora sé que no estoy sola.');
+            return;
+        }
+
+        setMensajeHotspot('');
+        setMostrarImagenFinal(true);
+    };
+
+    const handleSegundoHotspotClick = () => {
+        setMensajeSegundoHotspot('...');
+        setMostrarHotspots(false);
+    };
+
+    const cerrarMensajeSegundoHotspot = () => {
+        if (mensajeSegundoHotspot === '...') {
+            setMensajeSegundoHotspot('¿No entendiste el juego, verdad?');
+            return;
+        }
+
+        setMensajeSegundoHotspot('');
+        navigate('/');
+    };
 
     if (mostrarImagenFinal) {
         return (
@@ -141,9 +101,45 @@ function Puerta({ onVisit }) {
 
     return (
         <SceneContainer backgroundImage={fondoPuerta}>
-            {mensajeVisible && (
+            {mensajeActivo && !secuenciaIniciada && !mensajeHotspot && !mensajeSegundoHotspot && (
                 <div className="puerta-mensaje-overlay">
-                    <p className="puerta-mensaje-texto">{mensajeVisible}</p>
+                    <button
+                        type="button"
+                        className="puerta-mensaje-close"
+                        onClick={cerrarMensajeInicial}
+                        aria-label="Cerrar mensaje"
+                    >
+                        ✕
+                    </button>
+                    <p className="puerta-mensaje-texto">{mensajeActivo}</p>
+                </div>
+            )}
+
+            {mensajeHotspot && (
+                <div className="puerta-mensaje-overlay">
+                    <button
+                        type="button"
+                        className="puerta-mensaje-close"
+                        onClick={cerrarMensajePrimerHotspot}
+                        aria-label="Cerrar mensaje"
+                    >
+                        ✕
+                    </button>
+                    <p className="puerta-mensaje-texto">{mensajeHotspot}</p>
+                </div>
+            )}
+
+            {mensajeSegundoHotspot && (
+                <div className="puerta-mensaje-overlay">
+                    <button
+                        type="button"
+                        className="puerta-mensaje-close"
+                        onClick={cerrarMensajeSegundoHotspot}
+                        aria-label="Cerrar mensaje"
+                    >
+                        ✕
+                    </button>
+                    <p className="puerta-mensaje-texto">{mensajeSegundoHotspot}</p>
                 </div>
             )}
 
