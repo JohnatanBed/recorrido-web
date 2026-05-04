@@ -2,9 +2,26 @@ import { useState, useMemo, useCallback } from 'react';
 import { EMOTIONS_TEST } from '../constants/emotions';
 import '../styles/components/emotion-test.css';
 
+const shuffleArray = (items) => {
+  const shuffled = [...items];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+
+  return shuffled;
+};
+
 function EmotionTest({ onClose, initialLevel = 1 }) {
   const [currentLevel, setCurrentLevel] = useState(initialLevel);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [shuffledQuestions, setShuffledQuestions] = useState(() => {
+    const levels = ['level1', 'level2', 'level3'];
+    const initialLevelKey = levels[initialLevel - 1];
+
+    return shuffleArray(EMOTIONS_TEST[initialLevelKey]);
+  });
   const [answers, setAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [selectedDescriptions, setSelectedDescriptions] = useState({});
@@ -12,7 +29,7 @@ function EmotionTest({ onClose, initialLevel = 1 }) {
 
   const levels = ['level1', 'level2', 'level3'];
   const currentLevelKey = levels[currentLevel - 1];
-  const questions = EMOTIONS_TEST[currentLevelKey];
+  const questions = shuffledQuestions;
   const questionData = questions[currentQuestion];
   const totalQuestions = questions.length;
   const progress = ((currentQuestion + 1) / totalQuestions) * 100;
@@ -73,7 +90,11 @@ function EmotionTest({ onClose, initialLevel = 1 }) {
 
   const handleNextLevel = () => {
     if (currentLevel < 3) {
-      setCurrentLevel(currentLevel + 1);
+      const nextLevel = currentLevel + 1;
+      const nextLevelKey = levels[nextLevel - 1];
+
+      setCurrentLevel(nextLevel);
+      setShuffledQuestions(shuffleArray(EMOTIONS_TEST[nextLevelKey]));
       setCurrentQuestion(0);
       setShowResults(false);
     } else {
@@ -88,10 +109,12 @@ function EmotionTest({ onClose, initialLevel = 1 }) {
   };
 
   const correctAnswers = useMemo(() => {
-    return questions.reduce((count, q) => {
+    const originalQuestions = EMOTIONS_TEST[currentLevelKey];
+
+    return originalQuestions.reduce((count, q) => {
       return count + (answers[q.id] === q.correctAnswer ? 1 : 0);
     }, 0);
-  }, [answers, questions]);
+  }, [answers, currentLevelKey]);
 
   const percentage = Math.round((correctAnswers / totalQuestions) * 100);
 
