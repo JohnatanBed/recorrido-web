@@ -30,12 +30,6 @@ function Mural({ onVisit }) {
         if (fase !== 'mensaje') {
             return undefined;
         }
-
-        const timeoutId = setTimeout(() => {
-            setFase('secundarios');
-        }, 11500);
-
-        return () => clearTimeout(timeoutId);
     }, [fase]);
 
     useEffect(() => {
@@ -45,11 +39,6 @@ function Mural({ onVisit }) {
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setMostrarMensajeMuralLimpio(true);
-        const timeoutId = setTimeout(() => {
-            setMostrarMensajeMuralLimpio(false);
-        }, 7000);
-
-        return () => clearTimeout(timeoutId);
     }, [muralLimpioActivado]);
 
     useEffect(() => {
@@ -108,6 +97,14 @@ function Mural({ onVisit }) {
         setMuralLimpioActivado(true);
     };
 
+    const cerrarMensajePrincipal = () => {
+        setFase('secundarios');
+    };
+
+    const cerrarMensajeMuralLimpio = () => {
+        setMostrarMensajeMuralLimpio(false);
+    };
+
     const manejarEnvioNota = async (event) => {
         event.preventDefault();
 
@@ -161,6 +158,14 @@ function Mural({ onVisit }) {
                 <div
                     className="mural-dialog"
                 >
+                    <button
+                        type="button"
+                        className="mural-dialog__close"
+                        onClick={cerrarMensajePrincipal}
+                        aria-label="Cerrar mensaje"
+                    >
+                        ✕
+                    </button>
                     Las palabras pesan demasiado y los pensamientos no logran irse,
                     pero hay algo en esto que hace que todo sea más fácil.
                 </div>
@@ -189,6 +194,14 @@ function Mural({ onVisit }) {
 
             {fase === 'secundarios' && muralLimpioActivado && mostrarMensajeMuralLimpio && (
                 <div className="mural-clean-message">
+                    <button
+                        type="button"
+                        className="mural-clean-message__close"
+                        onClick={cerrarMensajeMuralLimpio}
+                        aria-label="Cerrar mensaje"
+                    >
+                        ✕
+                    </button>
                     Y tú, ¿cómo sacas al mundo todo eso que llevas dentro?
                 </div>
             )}
@@ -201,7 +214,7 @@ function Mural({ onVisit }) {
                         ) : notas.length === 0 ? (
                             <p className="mural-board__status">Aún no hay notas en el pizarrón.</p>
                         ) : (
-                            notas.map((nota, index) => {
+                            notas.map((nota) => {
                                 return (
                                 <article
                                     key={nota.id}
