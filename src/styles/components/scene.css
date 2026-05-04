@@ -41,6 +41,26 @@
     color: rgb(0, 0, 0);
 }
 
+/* Botón para iniciar test - posicionable mediante estilos inline */
+.start-test-button {
+    z-index: 3;
+    border: 0;
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    background: rgba(0, 0, 0, 0.72);
+    color: white;
+    font-family: "play", sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.start-test-button:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.95);
+    color: black;
+}
+
 .puerta-mensaje-overlay {
     position: absolute;
     left: 50%;
