@@ -19,7 +19,7 @@
 
 .mural-modal__message {
     margin: 0;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(1rem, 2vw, 1.5rem);
     line-height: 1.45;
     text-align: justify;
@@ -43,7 +43,7 @@
     padding: 0.8rem 1.25rem;
     background-color: rgba(255, 255, 255, 0.7);
     color: #000000;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(1rem, 1.8vw, 1.2rem);
     letter-spacing: 0.02em;
     cursor: pointer;
@@ -85,7 +85,7 @@
     color: #000000;
     padding: 0.6rem 1.9rem;
     border-radius: 12px;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1rem;
     line-height: 1.25;
     width: 260px;
@@ -149,7 +149,7 @@
     border-radius: 14px;
     background: rgba(255, 255, 255, 0.8);
     color: #000000;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(1rem, 2vw, 1.45rem);
     line-height: 1.3;
     text-align: center;
@@ -166,7 +166,7 @@
     padding: 0.75rem 1.5rem;
     background: rgba(255, 255, 255, 0.8);
     color: #000000;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(1rem, 1.8vw, 1.2rem);
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease;
@@ -219,7 +219,7 @@
     padding: 0.55rem 0.7rem;
     background: var(--mural-paper);
     color: #102834;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 0.9rem;
     outline: none;
     box-shadow: inset 0 0 0 1px rgba(21, 52, 65, 0.18);
@@ -240,7 +240,7 @@
 .mural-board__status,
 .mural-board__error {
     margin: 0;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .mural-board__counter {
@@ -254,7 +254,7 @@
     padding: 0.55rem 0.95rem;
     background: var(--mural-teal);
     color: #fdfaf5;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 0.86rem;
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease;
@@ -346,7 +346,7 @@
 
 .mural-message__text {
     margin: 0;
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 0.78rem;
     line-height: 1.15;
     white-space: pre-wrap;
@@ -356,7 +356,7 @@
 }
 
 .mural-message__time {
-    font-family: "Play", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 0.58rem;
     color: rgba(0, 0, 0, 0.62);
 }

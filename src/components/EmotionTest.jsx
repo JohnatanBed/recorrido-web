@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { EMOTIONS_TEST } from '../constants/emotions';
+import { EMOTIONS_TEST, getRandomQuestionsForLevel } from '../constants/emotions';
 import '../styles/components/emotion-test.css';
 
 const shuffleArray = (items) => {
@@ -16,12 +16,10 @@ const shuffleArray = (items) => {
 function EmotionTest({ onClose, initialLevel = 1 }) {
   const [currentLevel, setCurrentLevel] = useState(initialLevel);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [shuffledQuestions, setShuffledQuestions] = useState(() => {
-    const levels = ['level1', 'level2', 'level3'];
-    const initialLevelKey = levels[initialLevel - 1];
-
-    return shuffleArray(EMOTIONS_TEST[initialLevelKey]);
-  });
+  const initialShuffled = shuffleArray(getRandomQuestionsForLevel(initialLevel, 3));
+  const [shuffledQuestions, setShuffledQuestions] = useState(initialShuffled);
+  // Acumular preguntas de todos los niveles para calcular resultado final
+  const [allAskedQuestions, setAllAskedQuestions] = useState(initialShuffled);
   const [answers, setAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [selectedDescriptions, setSelectedDescriptions] = useState({});
@@ -84,17 +82,32 @@ function EmotionTest({ onClose, initialLevel = 1 }) {
     if (currentQuestion < totalQuestions - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      setShowResults(true);
+      // Fin del nivel actual
+      if (currentLevel < 3) {
+        // Avanzar automáticamente al siguiente nivel sin mostrar resultados intermedios
+        const nextLevel = currentLevel + 1;
+        const newShuffled = shuffleArray(getRandomQuestionsForLevel(nextLevel, 3));
+
+        setCurrentLevel(nextLevel);
+        setShuffledQuestions(newShuffled);
+        setAllAskedQuestions(prev => [...prev, ...newShuffled]);
+        setCurrentQuestion(0);
+      } else {
+        // Último nivel completado: mostrar resultados finales
+        setShowResults(true);
+      }
     }
   };
 
   const handleNextLevel = () => {
     if (currentLevel < 3) {
       const nextLevel = currentLevel + 1;
-      const nextLevelKey = levels[nextLevel - 1];
+
+      const newShuffled = shuffleArray(getRandomQuestionsForLevel(nextLevel, 3));
 
       setCurrentLevel(nextLevel);
-      setShuffledQuestions(shuffleArray(EMOTIONS_TEST[nextLevelKey]));
+      setShuffledQuestions(newShuffled);
+      setAllAskedQuestions(prev => [...prev, ...newShuffled]);
       setCurrentQuestion(0);
       setShowResults(false);
     } else {
@@ -108,15 +121,41 @@ function EmotionTest({ onClose, initialLevel = 1 }) {
     }
   };
 
+  // Calcular aciertos sobre todas las preguntas hechas en todos los niveles
   const correctAnswers = useMemo(() => {
-    const originalQuestions = EMOTIONS_TEST[currentLevelKey];
-
-    return originalQuestions.reduce((count, q) => {
+    return allAskedQuestions.reduce((count, q) => {
       return count + (answers[q.id] === q.correctAnswer ? 1 : 0);
     }, 0);
-  }, [answers, currentLevelKey]);
+  }, [answers, allAskedQuestions]);
 
-  const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+  const totalAsked = allAskedQuestions.length;
+  const percentage = totalAsked > 0 ? Math.round((correctAnswers / totalAsked) * 100) : 0;
+
+  const getAchievement = (pct) => {
+    if (pct <= 50) {
+      return {
+        name: 'Lienzo en Blanco',
+        description:
+          'Las personas con alexitimia suelen tener dificultades para identificar o describir emociones de primer nivel; es como intentar pintar sin pinturas.',
+      };
+    }
+
+    if (pct <= 85) {
+      return {
+        name: 'Fuera de Foco',
+        description:
+          'Has capturado la esencia de las emociones primarias, pero los matices más sutiles aún se ven borrosos en tu revelado.',
+      };
+    }
+
+    return {
+      name: 'Obra Maestra',
+      description:
+        'Posees una agudeza visual y emocional digna de un critic@; logras distinguir cada tono y pincelada del círculo de las emociones.',
+    };
+  };
+
+  const achievement = getAchievement(percentage);
 
   return (
     <div className="emotion-test-overlay">
@@ -159,32 +198,25 @@ function EmotionTest({ onClose, initialLevel = 1 }) {
           </>
         ) : (
           <div className="emotion-test-results">
-            <h2 className="emotion-test-results-title">Resultados Nivel {currentLevel}</h2>
+            <h2 className="emotion-test-results-title">Resultados Finales</h2>
             <div className="emotion-test-score">
               <div className="emotion-test-score-circle">
                 <span className="emotion-test-score-percentage">{percentage}%</span>
               </div>
               <p className="emotion-test-score-text">
-                Has acertado <strong>{correctAnswers}</strong> de <strong>{totalQuestions}</strong>{' '}
-                preguntas
+                Has acertado <strong>{correctAnswers}</strong> de <strong>{totalAsked}</strong> preguntas
               </p>
             </div>
 
+            <div className="emotion-test-achievement">
+              <h3 className="emotion-test-achievement-name">{achievement.name}</h3>
+              <p className="emotion-test-achievement-desc">{achievement.description}</p>
+            </div>
+
             <div className="emotion-test-results-actions">
-              {currentLevel < 3 ? (
-                <>
-                  <button className="emotion-test-button emotion-test-button-primary" onClick={handleNextLevel}>
-                    Siguiente Nivel
-                  </button>
-                  <button className="emotion-test-button emotion-test-button-secondary" onClick={handleClose}>
-                    Salir
-                  </button>
-                </>
-              ) : (
-                <button className="emotion-test-button emotion-test-button-primary" onClick={handleClose}>
-                  Finalizar Test
-                </button>
-              )}
+              <button className="emotion-test-button emotion-test-button-primary" onClick={handleClose}>
+                Finalizar Test
+              </button>
             </div>
           </div>
         )}

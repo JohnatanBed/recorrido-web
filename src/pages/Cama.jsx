@@ -5,7 +5,7 @@ import SceneContainer from '../components/SceneContainer';
 import Hotspot from '../components/Hotspot';
 import SlideViewer from '../components/SlideViewer';
 
-function Cama({ onVisit }) {
+function Cama({ onVisit, onStartAudio }) {
     const [openSlides, setOpenSlides] = useState(false);
 
     useEffect(() => {
@@ -25,6 +25,7 @@ function Cama({ onVisit }) {
                 slides={SLIDES}
                 isOpen={openSlides}
                 onClose={() => setOpenSlides(false)}
+                onStartAudio={onStartAudio}
             />
         </SceneContainer>
     );
