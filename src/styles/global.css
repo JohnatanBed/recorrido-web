@@ -5,6 +5,7 @@
 
 /* Component Styles */
 @import './components/home.css';
+@import './components/audio.css';
 @import './components/scene.css';
 @import './components/hotspots.css';
 @import './components/slide-viewer.css';

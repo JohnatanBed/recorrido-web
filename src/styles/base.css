@@ -1,5 +1,5 @@
 /* ===== RESET Y BASE ===== */
-@import url('https://fonts.googleapis.com/css2?family=monserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 
 html,
 body,
@@ -9,12 +9,19 @@ body,
     padding: 0;
 }
 
-body {
-    overflow: hidden;
-    font: inherit;
+html {
+    font-family: 'Montserrat', sans-serif;
 }
 
-button {
+body {
+    overflow: hidden;
+    font-family: inherit;
+}
+
+button,
+input,
+textarea,
+select {
     font: inherit;
 }
 

@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Habitacion from './pages/Habitación';
 import Computadora from './pages/Computadora';
@@ -15,9 +15,14 @@ import fondoMuralFinal from './assets/mural.png';
 import fondoMuralLimpio from './assets/mural-limpio.png';
 import fondoCama from './assets/cama.png';
 import fondoPuerta from './assets/puerta.png';
+import SplashScreen from './components/SplashScreen';
 
 function App() {
   const [visitedHotspots, setVisitedHotspots] = useState([]);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const audioRef = useRef(null);
+  const location = useLocation();
   const criticalSceneAssets = useMemo(
     () => [
       fondoHabitacion,
@@ -33,6 +38,70 @@ function App() {
   const isAssetsReady = useImagePreload(criticalSceneAssets);
 
   const unlockedHotspotIds = HOTSPOTS.map((hotspot) => hotspot.id);
+  const showAudioToggle = location.pathname !== '/';
+
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return undefined;
+    }
+
+    const handlePlay = () => setIsAudioPlaying(true);
+    const handlePause = () => setIsAudioPlaying(false);
+
+    audio.muted = isAudioMuted;
+    audio.loop = true;
+    audio.preload = 'auto';
+    audio.volume = 0.75;
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handlePause);
+
+    return () => {
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handlePause);
+    };
+  }, [isAudioMuted]);
+
+  const playGlobalAudio = useCallback(async () => {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    audio.muted = isAudioMuted;
+
+    try {
+      await audio.play();
+    } catch {
+      // The browser may still block playback until it sees a user gesture.
+    }
+  }, [isAudioMuted]);
+
+  const handleToggleAudio = useCallback(async () => {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    const nextMuted = !isAudioMuted;
+    setIsAudioMuted(nextMuted);
+    audio.muted = nextMuted;
+
+    if (!nextMuted && audio.paused) {
+      try {
+        await audio.play();
+      } catch {
+        // The browser may still block playback until it sees a user gesture.
+      }
+    }
+  }, [isAudioMuted]);
 
   const handleVisitHotspot = (hotspotId) => {
     setVisitedHotspots((previousVisited) => {
@@ -44,34 +113,71 @@ function App() {
     });
   };
 
+  if (showSplash) {
+    return (
+      <SplashScreen
+        onEnter={() => {
+          setShowSplash(false);
+          playGlobalAudio();
+        }}
+      />
+    );
+  }
+
   if (!isAssetsReady) {
     return <div className="app-loader">Cargando escena...</div>;
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route
-        path="/habitacion"
-        element={
-          <Habitacion
-            hotspots={HOTSPOTS}
-            unlockedHotspotIds={unlockedHotspotIds}
-            visitedHotspots={visitedHotspots}
-          />
-        }
-      />
-      <Route
-        path="/computadora"
-        element={<Computadora onVisit={() => handleVisitHotspot('computadora')} />}
-      />
-      <Route path="/mural" element={<Mural onVisit={() => handleVisitHotspot('mural')} />} />
-      <Route path="/cama" element={<Cama onVisit={() => handleVisitHotspot('cama')} />} />
-      <Route
-        path="/puerta"
-        element={<Puerta onVisit={() => handleVisitHotspot('puerta')} />}
-      />
-    </Routes>
+    <>
+      <audio ref={audioRef} src="/Vivirconeso.mp3" hidden aria-hidden="true" />
+
+      {showAudioToggle && (
+        <button
+          type="button"
+          className="global-audio-toggle"
+          onClick={handleToggleAudio}
+          aria-pressed={!isAudioMuted}
+          aria-label={isAudioMuted ? 'Activar audio global' : 'Silenciar audio global'}
+        >
+          <span className="global-audio-toggle__icon" aria-hidden="true">
+            {isAudioMuted ? '🔇' : isAudioPlaying ? '🔊' : '▶'}
+          </span>
+          <span className="global-audio-toggle__text">
+            {isAudioMuted ? 'Activar audio' : 'Silenciar audio'}
+          </span>
+        </button>
+      )}
+
+      <Routes>
+        <Route path="/" element={<Home onStartJourney={playGlobalAudio} />} />
+        <Route
+          path="/habitacion"
+          element={
+            <Habitacion
+              hotspots={HOTSPOTS}
+              unlockedHotspotIds={unlockedHotspotIds}
+              visitedHotspots={visitedHotspots}
+            />
+          }
+        />
+        <Route
+          path="/computadora"
+          element={<Computadora onVisit={() => handleVisitHotspot('computadora')} />}
+        />
+        <Route path="/mural" element={<Mural onVisit={() => handleVisitHotspot('mural')} />} />
+        <Route
+          path="/cama"
+          element={
+            <Cama onVisit={() => handleVisitHotspot('cama')} onStartAudio={playGlobalAudio} />
+          }
+        />
+        <Route
+          path="/puerta"
+          element={<Puerta onVisit={() => handleVisitHotspot('puerta')} />}
+        />
+      </Routes>
+    </>
   );
 }
 

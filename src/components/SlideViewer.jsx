@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSlideViewer } from '../hooks/useSlideViewer';
 
-function SlideViewer({ slides, isOpen, onClose }) {
+function SlideViewer({ slides, isOpen, onClose, onStartAudio }) {
     const audioRef = useRef(null);
     const {
         currentSlide,
@@ -18,13 +18,6 @@ function SlideViewer({ slides, isOpen, onClose }) {
         }
     }, [isOpen, resetSlide]);
 
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-        }
-    }, [currentSlide]);
-
     if (!isOpen) return null;
 
     const currentSlideData = slides[currentSlide];
@@ -40,11 +33,10 @@ function SlideViewer({ slides, isOpen, onClose }) {
 
     const handleAudioPlay = () => {
         if (audioRef.current) {
-            if (audioRef.current.paused) {
-                audioRef.current.play();
-            } else {
-                audioRef.current.pause();
-            }
+            audioRef.current.play();
+        }
+        if (onStartAudio) {
+            onStartAudio();
         }
     };
 

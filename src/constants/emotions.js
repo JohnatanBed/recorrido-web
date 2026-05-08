@@ -1,3 +1,9 @@
+// Función para seleccionar 3 preguntas aleatorias de un nivel
+const getRandomQuestions = (questions, count = 3) => {
+  const shuffled = [...questions].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+};
+
 export const EMOTIONS_TEST = {
     level1: [
         {
@@ -248,4 +254,13 @@ export const EMOTIONS_TEST = {
             options: ['Celos', 'Impotencia', 'Vulnerabilidad', 'Aterrado', 'Indignación', 'Esperanzado', 'Confiado', 'Perplejo', 'Repugnante', 'Repulsivo'],
         },
     ],
+};
+
+// Obtener preguntas aleatorias para cada nivel (3 preguntas por defecto)
+export const getRandomQuestionsForLevel = (level, questionCount = 3) => {
+    const levelKey = `level${level}`;
+    if (!EMOTIONS_TEST[levelKey]) {
+        return [];
+    }
+    return getRandomQuestions(EMOTIONS_TEST[levelKey], questionCount);
 };

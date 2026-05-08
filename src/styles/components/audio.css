@@ -1,0 +1,51 @@
+/* ===== GLOBAL AUDIO CONTROL ===== */
+
+.global-audio-toggle {
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+    z-index: 70;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.9rem 1.1rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(10, 10, 10, 0.82);
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    transition: transform 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.global-audio-toggle:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.92);
+    color: #111111;
+}
+
+.global-audio-toggle:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
+}
+
+.global-audio-toggle__icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+@media (max-width: 640px) {
+    .global-audio-toggle {
+        right: 0.75rem;
+        bottom: 0.75rem;
+        padding: 0.8rem 0.95rem;
+    }
+
+    .global-audio-toggle__text {
+        font-size: 0.85rem;
+    }
+}

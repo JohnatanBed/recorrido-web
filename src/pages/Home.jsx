@@ -1,8 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import fondoHome from '../assets/habitacion.png';
 
-function Home() {
+function Home({ onStartJourney }) {
     const navigate = useNavigate();
+
+    const handleEnterJourney = async () => {
+        if (onStartJourney) {
+            await onStartJourney();
+        }
+
+        navigate('/habitacion', { replace: true });
+    };
 
     return (
         <section className="home-screen">
@@ -16,7 +24,7 @@ function Home() {
                 <button
                     type="button"
                     className="home-screen__button"
-                    onClick={() => navigate('/habitacion', { replace: true })}
+                    onClick={handleEnterJourney}
                 >
                     Habitación
                 </button>

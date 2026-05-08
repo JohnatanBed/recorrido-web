@@ -18,14 +18,18 @@
     transform: translate(-50%, -50%) scale(1.3);
 }
 
+.hotspot-habitacion--visited:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+}
+
 .hotspot-habitacion--locked {
     background-color: rgba(140, 140, 140, 0.8);
     cursor: not-allowed;
 }
 
 .hotspot-habitacion--visited {
-    /* Visited state no longer applies a green background.
-       Keep the class for semantic/JS checks but do not change appearance. */
+    background-color: #4CAF50;
+    color: white;
 }
 
 /* ===== HOTSPOT CAMA ===== */

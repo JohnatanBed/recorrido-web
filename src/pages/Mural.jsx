@@ -171,7 +171,7 @@ function Mural({ onVisit }) {
                 </div>
             )}
 
-            {fase === 'secundarios' && !muralLimpioActivado && MURAL_SECONDARY_HOTSPOTS.map((hotspot) => (
+            {fase === 'secundarios' && !muralLimpioActivado && !todosLosHotspotsExplorados && MURAL_SECONDARY_HOTSPOTS.map((hotspot) => (
                 <button
                     key={hotspot.id}
                     type="button"
