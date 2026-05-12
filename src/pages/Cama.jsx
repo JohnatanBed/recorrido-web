@@ -1,12 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import fondoCama from '../assets/cama.png';
 import { SLIDES } from '../constants/slides';
 import SceneContainer from '../components/SceneContainer';
 import Hotspot from '../components/Hotspot';
 import SlideViewer from '../components/SlideViewer';
+import useImagePreload from '../hooks/useImagePreload';
 
 function Cama({ onVisit, onStartAudio, pauseGlobalAudio, resumeGlobalAudio }) {
     const [openSlides, setOpenSlides] = useState(false);
+    const slideImageUrls = useMemo(
+        () =>
+            SLIDES.map((slide) => (typeof slide === 'string' ? slide : slide.src)).filter(
+                (slideSrc) => /\.(png|jpe?g|webp|gif|avif)$/i.test(slideSrc)
+            ),
+        []
+    );
+    const areSlidesReady = useImagePreload(slideImageUrls);
 
     useEffect(() => {
         onVisit();
@@ -28,6 +37,7 @@ function Cama({ onVisit, onStartAudio, pauseGlobalAudio, resumeGlobalAudio }) {
                 onStartAudio={onStartAudio}
                 pauseGlobalAudio={pauseGlobalAudio}
                 resumeGlobalAudio={resumeGlobalAudio}
+                isReady={areSlidesReady}
             />
         </SceneContainer>
     );
