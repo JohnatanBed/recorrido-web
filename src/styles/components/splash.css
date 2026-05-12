@@ -26,21 +26,35 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 30vh;
-    background: rgba(255, 255, 255, 0.95);
+    bottom: 20vh;
+    background: #fff;
     color: #111;
-    border: none;
     padding: 0.8rem 1.2rem;
-    border-radius: 8px;
-    font-weight: 700;
+    border-radius: 40px;
+    font-weight: normal;
     cursor: pointer;
     z-index: 2;
+    font-family: monserrat, sans-serif;
+    animation: splash-button-pulse 2.6s ease-in-out infinite;
+    transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .splash-enter:hover {
-    background: rgba(204, 204, 204, 0.95);
+    transform: translateX(-50%) scale(1.04);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.18);
 }
 
 .splash-enter:focus {
-    outline: 3px solid #fff;
+    outline: none;
+}
+
+@keyframes splash-button-pulse {
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.08);
+    }
 }

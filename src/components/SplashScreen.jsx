@@ -1,28 +1,34 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/components/splash.css';
 
 export default function SplashScreen({ onEnter, buttonDelayMs = 8000 }) {
-  const [src, setSrc] = useState('/disclaimer.png');
-  const [showButton, setShowButton] = useState(false);
+  const slides = ['/disclaimer.png', '/recomendacion.png', '/carta.png'];
+  const [index, setIndex] = useState(0);
+  const [showButton, setShowButton] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowButton(true);
-    }, buttonDelayMs);
+  const navigate = useNavigate();
 
-    return () => clearTimeout(timer);
-  }, [buttonDelayMs]);
+  const handleContinue = () => {
+    if (index < slides.length - 1) {
+      setIndex((i) => i + 1);
+    } else {
+      navigate('/', { replace: true });
+      if (onEnter) onEnter();
+    }
+  };
 
   return (
     <div className="splash-root" role="dialog" aria-modal="true">
       <div className="splash-content">
         <img
-          src={src}
-          alt="Aviso"
+          src={slides[index]}
+          alt={`Pantalla ${index + 1}`}
           className="splash-image"
           onError={(e) => {
-            if (e?.currentTarget?.src && e.currentTarget.src.endsWith('.png')) {
-              setSrc('/disclaimer.jpg');
+            const src = e?.currentTarget?.src;
+            if (src && src.endsWith('.png')) {
+              e.currentTarget.src = src.replace('.png', '.jpg');
             }
           }}
         />
@@ -31,12 +37,14 @@ export default function SplashScreen({ onEnter, buttonDelayMs = 8000 }) {
           <button
             type="button"
             className="splash-enter"
-            onClick={() => {
-              if (onEnter) onEnter();
-            }}
-            aria-label="Comprendo"
+            onClick={handleContinue}
+            aria-label={index < slides.length - 1 ? 'Continuar' : 'Ir al inicio'}
           >
-            Comprendo
+            {index === 0
+              ? 'Revela mi mundo interior'
+              : index === 1
+                ? 'Todo en orden'
+                : 'Empecemos'}
           </button>
         )}
       </div>
