@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSlideViewer } from '../hooks/useSlideViewer';
 
-function SlideViewer({ slides, isOpen, onClose, onStartAudio }) {
+function SlideViewer({ slides, isOpen, onClose, onStartAudio, pauseGlobalAudio, resumeGlobalAudio }) {
     const audioRef = useRef(null);
     const {
         currentSlide,
@@ -17,6 +17,30 @@ function SlideViewer({ slides, isOpen, onClose, onStartAudio }) {
             resetSlide();
         }
     }, [isOpen, resetSlide]);
+
+    useEffect(() => {
+        const currentSlideData = slides[currentSlide];
+        const slideSrc = typeof currentSlideData === 'string' ? currentSlideData : currentSlideData.src;
+        const isVideo = slideSrc && /\.(mp4|webm|ogg|mov)$/i.test(slideSrc);
+
+        if (isOpen && isVideo && pauseGlobalAudio) {
+            pauseGlobalAudio();
+        } else if (isOpen && !isVideo && resumeGlobalAudio) {
+            resumeGlobalAudio();
+        }
+    }, [isOpen, currentSlide, slides, pauseGlobalAudio, resumeGlobalAudio]);
+
+    useEffect(() => {
+        const handleCloseSlideViewer = () => {
+            if (resumeGlobalAudio) {
+                resumeGlobalAudio();
+            }
+        };
+
+        if (!isOpen) {
+            handleCloseSlideViewer();
+        }
+    }, [isOpen, resumeGlobalAudio]);
 
     if (!isOpen) return null;
 

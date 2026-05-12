@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Habitacion from './pages/Habitación';
 import Computadora from './pages/Computadora';
@@ -37,7 +37,12 @@ function App() {
   );
   const isAssetsReady = useImagePreload(criticalSceneAssets);
 
-  const unlockedHotspotIds = HOTSPOTS.map((hotspot) => hotspot.id);
+  const canEnterDoor = ['computadora', 'mural', 'cama'].every((hotspotId) =>
+    visitedHotspots.includes(hotspotId)
+  );
+  const unlockedHotspotIds = HOTSPOTS.map((hotspot) =>
+    hotspot.id === 'puerta' ? (canEnterDoor ? hotspot.id : null) : hotspot.id
+  ).filter(Boolean);
   const showAudioToggle = location.pathname !== '/';
 
   const [showSplash, setShowSplash] = useState(true);
@@ -95,6 +100,24 @@ function App() {
     audio.muted = nextMuted;
 
     if (!nextMuted && audio.paused) {
+      try {
+        await audio.play();
+      } catch {
+        // The browser may still block playback until it sees a user gesture.
+      }
+    }
+  }, [isAudioMuted]);
+
+  const pauseGlobalAudio = useCallback(() => {
+    const audio = audioRef.current;
+    if (audio && !audio.paused) {
+      audio.pause();
+    }
+  }, []);
+
+  const resumeGlobalAudio = useCallback(async () => {
+    const audio = audioRef.current;
+    if (audio && audio.paused && !isAudioMuted) {
       try {
         await audio.play();
       } catch {
@@ -163,18 +186,24 @@ function App() {
         />
         <Route
           path="/computadora"
-          element={<Computadora onVisit={() => handleVisitHotspot('computadora')} />}
+          element={<Computadora onVisit={() => handleVisitHotspot('computadora')} pauseGlobalAudio={pauseGlobalAudio} resumeGlobalAudio={resumeGlobalAudio} />}
         />
-        <Route path="/mural" element={<Mural onVisit={() => handleVisitHotspot('mural')} />} />
+        <Route path="/mural" element={<Mural onVisit={() => handleVisitHotspot('mural')} pauseGlobalAudio={pauseGlobalAudio} resumeGlobalAudio={resumeGlobalAudio} />} />
         <Route
           path="/cama"
           element={
-            <Cama onVisit={() => handleVisitHotspot('cama')} onStartAudio={playGlobalAudio} />
+            <Cama onVisit={() => handleVisitHotspot('cama')} onStartAudio={playGlobalAudio} pauseGlobalAudio={pauseGlobalAudio} resumeGlobalAudio={resumeGlobalAudio} />
           }
         />
         <Route
           path="/puerta"
-          element={<Puerta onVisit={() => handleVisitHotspot('puerta')} />}
+          element={
+            canEnterDoor ? (
+              <Puerta onVisit={() => handleVisitHotspot('puerta')} />
+            ) : (
+              <Navigate to="/habitacion" replace />
+            )
+          }
         />
       </Routes>
     </>

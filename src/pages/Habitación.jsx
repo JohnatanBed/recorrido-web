@@ -18,7 +18,7 @@ function Habitacion({ hotspots, unlockedHotspotIds, visitedHotspots }) {
                 className="scene-menu-button"
                 onClick={() => navigate('/')}
             >
-                Menú Principal
+                Menú principal
             </button>
             {hotspots.map((hotspot) => (
                 <StateHotspot
