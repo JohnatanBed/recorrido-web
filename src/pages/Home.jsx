@@ -4,12 +4,12 @@ import fondoHome from '../assets/habitacion.png';
 function Home({ onStartJourney }) {
     const navigate = useNavigate();
 
-    const handleEnterJourney = async () => {
+    const handleEnterJourney = async (path) => {
         if (onStartJourney) {
             await onStartJourney();
         }
 
-        navigate('/habitacion', { replace: true });
+        navigate(path, { replace: true });
     };
 
     return (
@@ -24,9 +24,23 @@ function Home({ onStartJourney }) {
                 <button
                     type="button"
                     className="home-screen__button"
-                    onClick={handleEnterJourney}
+                    onClick={() => handleEnterJourney('/atico')}
+                >
+                    Ático
+                </button>
+                <button
+                    type="button"
+                    className="home-screen__button"
+                    onClick={() => handleEnterJourney('/habitacion')}
                 >
                     Habitación
+                </button>
+                <button
+                    type="button"
+                    className="home-screen__button"
+                    onClick={() => handleEnterJourney('/sotano')}
+                >
+                    Sótano
                 </button>
             </div>
         </section>

@@ -175,6 +175,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Home onStartJourney={playGlobalAudio} />} />
         <Route
+          path="/atico"
+          element={<Navigate to="/habitacion" replace />}
+        />
+        <Route
+          path="/sotano"
+          element={<Navigate to="/habitacion" replace />}
+        />
+        <Route
           path="/habitacion"
           element={
             <Habitacion

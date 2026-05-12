@@ -54,18 +54,19 @@
 
 .home-screen__title {
     position: relative;
-    top: -200px;
+    top: -50px;
     margin: 0;
     max-width: 25ch;
     font-size: clamp(2.5rem, 6vw, 5rem);
     line-height: 0.95;
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.65);
-    font-family: 'Montserrat', sans-serif;
+    font-family: playfair display, serif;
     font-weight: 400;
     font-style: normal;
 }
 
 .home-screen__button {
+    width: min(18rem, 80vw);
     border: 0;
     border-radius: 999px;
     padding: 1.2rem 2rem;
@@ -74,11 +75,11 @@
     letter-spacing: 0.04em;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
+    font-family: montserrat, sans-serif;
+    font-weight: normal;
     font-style: normal;
-    font-size: 1.2rem;
-    animation: softPulse 2s ease-in-out infinite;
+    font-size: 1.5rem;
+    margin-top: 1rem;
 }
 
 .home-screen__button:hover {
@@ -87,5 +88,5 @@
 }
 
 .home-screen__button:active {
-    animation: none;
+    transform: translateY(1px);
 }
