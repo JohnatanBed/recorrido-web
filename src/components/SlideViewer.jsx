@@ -1,8 +1,17 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSlideViewer } from '../hooks/useSlideViewer';
 
-function SlideViewer({ slides, isOpen, onClose, onStartAudio }) {
+function SlideViewer({
+    slides,
+    isOpen,
+    onClose,
+    onStartAudio,
+    pauseGlobalAudio,
+    resumeGlobalAudio,
+    isReady = true,
+}) {
     const audioRef = useRef(null);
+    const [loadedSlides, setLoadedSlides] = useState({});
     const {
         currentSlide,
         handleNextSlide,
@@ -17,6 +26,30 @@ function SlideViewer({ slides, isOpen, onClose, onStartAudio }) {
             resetSlide();
         }
     }, [isOpen, resetSlide]);
+
+    useEffect(() => {
+        const currentSlideData = slides[currentSlide];
+        const slideSrc = typeof currentSlideData === 'string' ? currentSlideData : currentSlideData.src;
+        const isVideo = slideSrc && /\.(mp4|webm|ogg|mov)$/i.test(slideSrc);
+
+        if (isOpen && isVideo && pauseGlobalAudio) {
+            pauseGlobalAudio();
+        } else if (isOpen && !isVideo && resumeGlobalAudio) {
+            resumeGlobalAudio();
+        }
+    }, [isOpen, currentSlide, slides, pauseGlobalAudio, resumeGlobalAudio]);
+
+    useEffect(() => {
+        const handleCloseSlideViewer = () => {
+            if (resumeGlobalAudio) {
+                resumeGlobalAudio();
+            }
+        };
+
+        if (!isOpen) {
+            handleCloseSlideViewer();
+        }
+    }, [isOpen, resumeGlobalAudio]);
 
     if (!isOpen) return null;
 
@@ -41,6 +74,13 @@ function SlideViewer({ slides, isOpen, onClose, onStartAudio }) {
     };
 
     const isVideo = slideSrc && /\.(mp4|webm|ogg|mov)$/i.test(slideSrc);
+    const handleSlideReady = () => {
+        setLoadedSlides((previousLoadedSlides) => ({
+            ...previousLoadedSlides,
+            [slideSrc]: true,
+        }));
+    };
+    const showLoading = !isReady || !loadedSlides[slideSrc];
 
     return (
         <div className="slide-viewer-modal" role="dialog" aria-modal="true">
@@ -108,14 +148,22 @@ function SlideViewer({ slides, isOpen, onClose, onStartAudio }) {
                             className="slide-viewer-image"
                             autoPlay
                             loop
+                            controls={false}
+                            preload="auto"
+                            onLoadedData={handleSlideReady}
+                            onCanPlay={handleSlideReady}
+                            onError={handleSlideReady}
                         />
                     ) : (
                         <img
                             src={slideSrc}
                             alt={`Slide ${currentSlide + 1}`}
                             className="slide-viewer-image"
+                            onLoad={handleSlideReady}
+                            onError={handleSlideReady}
                         />
                     )}
+                    {showLoading && <div className="slide-viewer-loading">Cargando slide...</div>}
                     {audioSrc && <audio ref={audioRef} src={audioSrc} />}
                 </div>
 

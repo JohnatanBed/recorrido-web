@@ -33,18 +33,16 @@ const preloadImage = (src) => {
 };
 
 function useImagePreload(imageUrls) {
-    const [isReady, setIsReady] = useState(false);
-    const uniqueUrls = useMemo(() => [...new Set(imageUrls.filter(Boolean))], [imageUrls]);
+    const normalizedUrls = useMemo(() => imageUrls.filter(Boolean), [imageUrls]);
+    const [isReady, setIsReady] = useState(() => normalizedUrls.length === 0);
+    const uniqueUrls = useMemo(() => [...new Set(normalizedUrls)], [normalizedUrls]);
 
     useEffect(() => {
         let isMounted = true;
 
         if (uniqueUrls.length === 0) {
-            setIsReady(true);
             return undefined;
         }
-
-        setIsReady(false);
 
         Promise.all(uniqueUrls.map((url) => preloadImage(url))).finally(() => {
             if (isMounted) {

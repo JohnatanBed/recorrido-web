@@ -5,17 +5,18 @@
     background-color: white;
     border: 0;
     color: black;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     border-radius: 50%;
     text-align: center;
-    line-height: 30px;
+    line-height: 25px;
     cursor: pointer;
     font-weight: bold;
+    animation: habitacion-hotspot-pulse 2.2s ease-in-out infinite;
 }
 
 .hotspot-habitacion--active:hover {
-    transform: translate(-50%, -50%) scale(1.3);
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
 .hotspot-habitacion--visited:hover {
@@ -32,6 +33,17 @@
     color: white;
 }
 
+@keyframes habitacion-hotspot-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
+}
+
 /* ===== HOTSPOT CAMA ===== */
 .hotspot-cama {
     position: absolute;
@@ -42,10 +54,22 @@
     height: 18px;
     border-radius: 50%;
     cursor: pointer;
+    animation: cama-hotspot-pulse 2.2s ease-in-out infinite;
 }
 
 .hotspot-cama:hover {
     transform: translate(-50%, -50%) scale(1.3);
+}
+
+@keyframes cama-hotspot-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
 }
 
 /* ===== HOTSPOT MURAL ===== */
@@ -59,10 +83,22 @@
     transform: translate(-50%, -50%);
     cursor: pointer;
     border-radius: 50%;
+    animation: mural-hotspot-pulse 2.2s ease-in-out infinite;
 }
 
 .hotspot-mural:hover {
     transform: translate(-50%, -50%) scale(1.3);
+}
+
+@keyframes mural-hotspot-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
 }
 
 /* ===== HOTSPOTS PUERTA ===== */
@@ -75,8 +111,20 @@
     height: 18px;
     border-radius: 50%;
     cursor: pointer;
+    animation: puerta-hotspot-pulse 2.2s ease-in-out infinite;
 }
 
 .hotspot-puerta:hover {
     transform: translate(-50%, -50%) scale(1.3);
+}
+
+@keyframes puerta-hotspot-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+    }
 }

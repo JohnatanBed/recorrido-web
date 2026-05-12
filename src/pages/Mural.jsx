@@ -6,7 +6,7 @@ import fondoMuralLimpio from '../assets/mural-limpio.png';
 import { supabase } from '../lib/supabaseClient';
 import { MURAL_SECONDARY_HOTSPOTS } from '../constants/mural';
 
-function Mural({ onVisit }) {
+function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
     const navigate = useNavigate();
     const [fase, setFase] = useState('principal');
     const [hotspotActivo, setHotspotActivo] = useState(null);
@@ -25,6 +25,12 @@ function Mural({ onVisit }) {
     useEffect(() => {
         onVisit();
     }, [onVisit]);
+
+    useEffect(() => {
+        if (mostrarVideo && pauseGlobalAudio) {
+            pauseGlobalAudio();
+        }
+    }, [mostrarVideo, pauseGlobalAudio]);
 
     useEffect(() => {
         if (fase !== 'mensaje') {
@@ -91,6 +97,9 @@ function Mural({ onVisit }) {
     const cerrarPopup = () => {
         setHotspotActivo(null);
         setMostrarVideo(false);
+        if (resumeGlobalAudio) {
+            resumeGlobalAudio();
+        }
     };
 
     const limpiarMural = () => {
@@ -261,6 +270,14 @@ function Mural({ onVisit }) {
             {hotspotActivo && (
                 <div className="mural-modal" role="dialog" aria-modal="true" aria-label="Cortometraje" onClick={cerrarPopup}>
                     <div className="mural-modal__panel" onClick={(e) => e.stopPropagation()}>
+                        <button
+                            type="button"
+                            className="mural-modal__close"
+                            onClick={cerrarPopup}
+                            aria-label="Cerrar cortometraje"
+                        >
+                            ✕
+                        </button>
                         {!mostrarVideo ? (
                             <>
                                 <p className="mural-modal__message">{hotspotActivo.message}</p>

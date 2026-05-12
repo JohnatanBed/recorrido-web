@@ -3,12 +3,20 @@ import fondoComputadora from '../assets/computadora.png';
 import SceneContainer from '../components/SceneContainer';
 import EmotionTest from '../components/EmotionTest';
 
-function Computadora({ onVisit, buttonPosition = { top: '40%', left: '50.5%' } }) {
+function Computadora({ onVisit, pauseGlobalAudio, resumeGlobalAudio, buttonPosition = { top: '40%', left: '50.5%' } }) {
     const [showTest, setShowTest] = useState(false);
 
     useEffect(() => {
         onVisit();
     }, [onVisit]);
+
+    useEffect(() => {
+        if (showTest && pauseGlobalAudio) {
+            pauseGlobalAudio();
+        } else if (!showTest && resumeGlobalAudio) {
+            resumeGlobalAudio();
+        }
+    }, [showTest, pauseGlobalAudio, resumeGlobalAudio]);
 
     const handleStartTest = () => {
         setShowTest(true);
