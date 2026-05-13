@@ -106,6 +106,17 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
         setMostrarMensajeMuralLimpio(false);
     };
 
+    const retroceder = () => {
+        if (muralLimpioActivado) {
+            setMuralLimpioActivado(false);
+            setMostrarMensajeMuralLimpio(false);
+        } else if (fase === 'mensaje') {
+            setFase('principal');
+        } else if (fase === 'secundarios') {
+            setFase('mensaje');
+        }
+    };
+
     const manejarEnvioNota = async (event) => {
         event.preventDefault();
 
@@ -147,6 +158,17 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
             >
                 Habitación
             </button>
+
+            {(fase === 'mensaje' || fase === 'secundarios' || muralLimpioActivado) && (
+                <button
+                    type="button"
+                    className="mural-back-button"
+                    onClick={retroceder}
+                    aria-label="Volver"
+                >
+                    Volver
+                </button>
+            )}
 
             {fase === 'principal' && (
                 <div

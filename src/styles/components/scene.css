@@ -123,14 +123,16 @@
     border-radius: 14px;
     background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .puerta-mensaje-close {
-    position: absolute;
-    top: -0.65rem;
-    right: -0.65rem;
+    position: relative;
+    flex-shrink: 0;
     width: 2rem;
-    height: 2rem;
+    height: 1.5rem;
     border: 0;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.9);
@@ -142,16 +144,31 @@
     display: grid;
     place-items: center;
     transition: transform 0.2s ease, background-color 0.2s ease;
+    animation: puerta-pulse 1.5s ease-in-out infinite;
+    transform-origin: center;
 }
 
 .puerta-mensaje-close:hover {
     transform: translateY(-1px);
     background: rgba(255, 255, 255, 1);
+    animation-play-state: paused;
+}
 
+@keyframes puerta-pulse {
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 0.35rem rgba(255, 255, 255, 0);
+    }
 }
 
 .puerta-mensaje-texto {
     margin: 0;
+    flex: 1;
     color: #f7f7f7;
     text-align: center;
     font-family: monserrat, sans-serif;
@@ -162,10 +179,24 @@
 body.puerta-invertido .puerta-mensaje-close {
     background: rgba(0, 0, 0, 0.9);
     color: #ffffff;
+    animation: puerta-pulse-invertido 1.5s ease-in-out infinite;
 }
 
 body.puerta-invertido .puerta-mensaje-close:hover {
     background: rgba(0, 0, 0, 1);
+    animation-play-state: paused;
+}
+
+@keyframes puerta-pulse-invertido {
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 0.35rem rgba(0, 0, 0, 0);
+    }
 }
 
 /* Invert colors when requested from Puerta (first hotspot) */
