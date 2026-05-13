@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useSlideViewer } from '../hooks/useSlideViewer';
+import useMediaPreload from '../hooks/useMediaPreload';
 
 function SlideViewer({
     slides,
@@ -20,6 +21,37 @@ function SlideViewer({
         isFirstSlide,
         isLastSlide,
     } = useSlideViewer(slides);
+
+    // Extrae URLs de medios para precargar (actual, siguiente y anterior)
+    const getSlideSrc = (slide) => {
+        if (typeof slide === 'string') return slide;
+        return slide?.src || null;
+    };
+
+    const mediasToPreload = useMemo(() => {
+        const medias = [];
+
+        // Slide actual
+        const currentSrc = getSlideSrc(slides[currentSlide]);
+        if (currentSrc) medias.push(currentSrc);
+
+        // Siguiente slide
+        if (currentSlide < slides.length - 1) {
+            const nextSrc = getSlideSrc(slides[currentSlide + 1]);
+            if (nextSrc) medias.push(nextSrc);
+        }
+
+        // Slide anterior
+        if (currentSlide > 0) {
+            const prevSrc = getSlideSrc(slides[currentSlide - 1]);
+            if (prevSrc) medias.push(prevSrc);
+        }
+
+        return medias;
+    }, [currentSlide, slides]);
+
+    // Precargar slides adyacentes
+    useMediaPreload(mediasToPreload, { strict: false });
 
     useEffect(() => {
         if (isOpen) {
