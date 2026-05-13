@@ -19,6 +19,13 @@ import fondoPuerta from './assets/puerta.png';
 import fondoSotano from './assets/sotano.png';
 import SplashScreen from './components/SplashScreen';
 
+const profileImages = [
+  '/perfiles/alexis comleto.png',
+  '/perfiles/Lopez completo.png',
+  '/perfiles/Usuga completo.png',
+  '/perfiles/camila completo.png',
+];
+
 function App() {
   const [visitedHotspots, setVisitedHotspots] = useState([]);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
@@ -35,6 +42,7 @@ function App() {
       fondoCama,
       fondoPuerta,
       fondoSotano,
+      ...profileImages,
     ],
     []
   );

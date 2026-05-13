@@ -103,43 +103,43 @@ function Puerta({ onVisit }) {
         <SceneContainer backgroundImage={fondoPuerta}>
             {mensajeActivo && !secuenciaIniciada && !mensajeHotspot && !mensajeSegundoHotspot && (
                 <div className="puerta-mensaje-overlay">
+                    <p className="puerta-mensaje-texto">{mensajeActivo}</p>
                     <button
                         type="button"
                         className="puerta-mensaje-close"
                         onClick={cerrarMensajeInicial}
-                        aria-label="Cerrar mensaje"
+                        aria-label="Siguiente mensaje"
                     >
-                        ✕
+                        ›
                     </button>
-                    <p className="puerta-mensaje-texto">{mensajeActivo}</p>
                 </div>
             )}
 
             {mensajeHotspot && (
                 <div className="puerta-mensaje-overlay">
+                    <p className="puerta-mensaje-texto">{mensajeHotspot}</p>
                     <button
                         type="button"
                         className="puerta-mensaje-close"
                         onClick={cerrarMensajePrimerHotspot}
-                        aria-label="Cerrar mensaje"
+                        aria-label="Siguiente mensaje"
                     >
-                        ✕
+                        ›
                     </button>
-                    <p className="puerta-mensaje-texto">{mensajeHotspot}</p>
                 </div>
             )}
 
             {mensajeSegundoHotspot && (
                 <div className="puerta-mensaje-overlay">
+                    <p className="puerta-mensaje-texto">{mensajeSegundoHotspot}</p>
                     <button
                         type="button"
                         className="puerta-mensaje-close"
                         onClick={cerrarMensajeSegundoHotspot}
-                        aria-label="Cerrar mensaje"
+                        aria-label="Siguiente mensaje"
                     >
-                        ✕
+                        ›
                     </button>
-                    <p className="puerta-mensaje-texto">{mensajeSegundoHotspot}</p>
                 </div>
             )}
 
