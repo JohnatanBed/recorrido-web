@@ -8,7 +8,7 @@ import Cama from './pages/Cama';
 import Puerta from './pages/Puerta';
 import Sotano from './pages/Sotano';
 import { HOTSPOTS } from './constants/hotspots';
-import useImagePreload from './hooks/useImagePreload';
+import useAutoPreload from './hooks/useAutoPreload';
 import fondoHabitacion from './assets/habitacion.png';
 import fondoComputadora from './assets/computadora.png';
 import fondoMuralInicial from './assets/mural-tableta.png';
@@ -46,7 +46,9 @@ function App() {
     ],
     []
   );
-  const isAssetsReady = useImagePreload(criticalSceneAssets);
+  
+  // Precarga automática de todos los assets (críticos y background)
+  const { criticalReady: isAssetsReady } = useAutoPreload();
 
   const canEnterDoor = ['computadora', 'mural', 'cama'].every((hotspotId) =>
     visitedHotspots.includes(hotspotId)
