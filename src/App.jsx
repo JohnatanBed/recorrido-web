@@ -6,6 +6,7 @@ import Computadora from './pages/Computadora';
 import Mural from './pages/Mural';
 import Cama from './pages/Cama';
 import Puerta from './pages/Puerta';
+import Sotano from './pages/Sotano';
 import { HOTSPOTS } from './constants/hotspots';
 import useImagePreload from './hooks/useImagePreload';
 import fondoHabitacion from './assets/habitacion.png';
@@ -15,6 +16,7 @@ import fondoMuralFinal from './assets/mural.png';
 import fondoMuralLimpio from './assets/mural-limpio.png';
 import fondoCama from './assets/cama.png';
 import fondoPuerta from './assets/puerta.png';
+import fondoSotano from './assets/sotano.png';
 import SplashScreen from './components/SplashScreen';
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
       fondoMuralLimpio,
       fondoCama,
       fondoPuerta,
+      fondoSotano,
     ],
     []
   );
@@ -43,7 +46,7 @@ function App() {
   const unlockedHotspotIds = HOTSPOTS.map((hotspot) =>
     hotspot.id === 'puerta' ? (canEnterDoor ? hotspot.id : null) : hotspot.id
   ).filter(Boolean);
-  const showAudioToggle = location.pathname !== '/';
+  const showAudioToggle = !['/', '/sotano'].includes(location.pathname);
 
   const [showSplash, setShowSplash] = useState(true);
 
@@ -178,10 +181,7 @@ function App() {
           path="/atico"
           element={<Navigate to="/habitacion" replace />}
         />
-        <Route
-          path="/sotano"
-          element={<Navigate to="/habitacion" replace />}
-        />
+        <Route path="/sotano" element={<Sotano />} />
         <Route
           path="/habitacion"
           element={

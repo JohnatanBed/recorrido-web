@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/components/splash.css';
 
 export default function SplashScreen({ onEnter, buttonDelayMs = 8000 }) {
-  const slides = ['/disclaimer.png', '/recomendacion.png', '/carta.png'];
+  const slides = ['/recomendacion.png', '/disclaimer.png', '/carta.png'];
   const [index, setIndex] = useState(0);
   const [showButton, setShowButton] = useState(true);
 

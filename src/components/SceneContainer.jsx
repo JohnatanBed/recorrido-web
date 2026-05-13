@@ -1,6 +1,17 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 
-function SceneContainer({ backgroundImage, children, onBackClick = null }) {
+
+function SceneContainer({
+    backgroundImage,
+    children,
+    onBackClick = null,
+    className = '',
+    showBack = undefined,
+    showMenu = false,
+    menuLabel = 'Menú principal',
+    menuClassName = '',
+    menuContent = 'Menú principal',
+}) {
     const navigate = useNavigate();
 
     const { pathname } = useLocation();
@@ -13,22 +24,34 @@ function SceneContainer({ backgroundImage, children, onBackClick = null }) {
         }
     };
 
+    const shouldShowBack = typeof showBack === 'boolean' ? showBack : pathname !== '/habitacion';
+
     return (
         <div
-            className="fondo-global"
-            style={{
-                backgroundImage: `url(${backgroundImage})`,
-            }}
+            className={`fondo-global ${className}`}
+            style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : undefined}
         >
-            {pathname !== '/habitacion' && (
+            {shouldShowBack && (
                 <button
                     type="button"
                     className="scene-back-button"
                     onClick={handleBack}
                 >
-                    Volver
+                    Habitación
                 </button>
             )}
+
+            {showMenu && (
+                <button
+                    type="button"
+                    className={`scene-menu-button ${menuClassName}`.trim()}
+                    onClick={() => navigate('/')}
+                    aria-label={menuLabel}
+                >
+                    {menuContent}
+                </button>
+            )}
+
             {children}
         </div>
     );

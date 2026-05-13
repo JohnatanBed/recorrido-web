@@ -157,6 +157,19 @@ function EmotionTest({ onClose, initialLevel = 1 }) {
 
   const achievement = getAchievement(percentage);
 
+  const handleRetryTest = () => {
+    const resetQuestions = shuffleArray(getRandomQuestionsForLevel(initialLevel, 3));
+
+    setCurrentLevel(initialLevel);
+    setCurrentQuestion(0);
+    setShuffledQuestions(resetQuestions);
+    setAllAskedQuestions(resetQuestions);
+    setAnswers({});
+    setShowResults(false);
+    setSelectedDescriptions({});
+    setSelectedOptions({});
+  };
+
   return (
     <div className="emotion-test-overlay">
       <div className={`emotion-test-container emotion-test-container--level-${currentLevel}`}>
@@ -214,6 +227,9 @@ function EmotionTest({ onClose, initialLevel = 1 }) {
             </div>
 
             <div className="emotion-test-results-actions">
+              <button className="emotion-test-button emotion-test-button-secondary" onClick={handleRetryTest}>
+                Intentar de nuevo
+              </button>
               <button className="emotion-test-button emotion-test-button-primary" onClick={handleClose}>
                 Finalizar Test
               </button>

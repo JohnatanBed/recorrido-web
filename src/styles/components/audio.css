@@ -11,12 +11,12 @@
     padding: 0.9rem 1.1rem;
     border: 0;
     border-radius: 999px;
-    background: rgba(10, 10, 10, 0.82);
-    color: #ffffff;
+    background: rgba(255, 255, 255, 0.8);
+    color: #000000;
     cursor: pointer;
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(10px);
-    font-family: 'Montserrat', sans-serif;
+    font-family: monserrat, sans-serif;
     font-size: 0.95rem;
     letter-spacing: 0.03em;
     transition: transform 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
@@ -24,8 +24,8 @@
 
 .global-audio-toggle:hover {
     transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.92);
-    color: #111111;
+    background: rgba(0, 0, 0, 0.9);
+    color: #ffffff;
 }
 
 .global-audio-toggle:focus-visible {

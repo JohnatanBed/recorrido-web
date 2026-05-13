@@ -22,7 +22,7 @@
     place-items: center;
     background: #111111;
     color: #ffffff;
-    font-family: 'Montserrat', sans-serif;
+    font-family: monserrat, sans-serif;
     font-size: 1rem;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .home-screen__button:hover {
-    background: rgba(35, 35, 35, 0.92);
+    background: rgba(0, 0, 0, 0.8);
     color: #ffffff;
 }
 
