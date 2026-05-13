@@ -11,7 +11,6 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
     const [fase, setFase] = useState('principal');
     const [hotspotActivo, setHotspotActivo] = useState(null);
     const [mostrarVideo, setMostrarVideo] = useState(false);
-    const [hotspotsExplorados, setHotspotsExplorados] = useState(() => new Set());
     const [muralLimpioActivado, setMuralLimpioActivado] = useState(false);
     const [mostrarMensajeMuralLimpio, setMostrarMensajeMuralLimpio] = useState(false);
     const [notas, setNotas] = useState([]);
@@ -19,8 +18,6 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
     const [cargandoNotas, setCargandoNotas] = useState(false);
     const [enviandoNota, setEnviandoNota] = useState(false);
     const [errorNotas, setErrorNotas] = useState('');
-
-    const todosLosHotspotsExplorados = hotspotsExplorados.size === MURAL_SECONDARY_HOTSPOTS.length;
 
     useEffect(() => {
         onVisit();
@@ -87,11 +84,6 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
     const abrirHotspotSecundario = (hotspot) => {
         setHotspotActivo(hotspot);
         setMostrarVideo(false);
-        setHotspotsExplorados((prev) => {
-            const next = new Set(prev);
-            next.add(hotspot.id);
-            return next;
-        });
     };
 
     const cerrarPopup = () => {
@@ -153,7 +145,7 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
                 className="scene-back-button"
                 onClick={() => navigate('/habitacion')}
             >
-                Volver
+                Habitación
             </button>
 
             {fase === 'principal' && (
@@ -180,7 +172,7 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
                 </div>
             )}
 
-            {fase === 'secundarios' && !muralLimpioActivado && !todosLosHotspotsExplorados && MURAL_SECONDARY_HOTSPOTS.map((hotspot) => (
+            {fase === 'secundarios' && !muralLimpioActivado && MURAL_SECONDARY_HOTSPOTS.map((hotspot) => (
                 <button
                     key={hotspot.id}
                     type="button"
@@ -191,7 +183,7 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
                 />
             ))}
 
-            {fase === 'secundarios' && todosLosHotspotsExplorados && !muralLimpioActivado && (
+            {fase === 'secundarios' && !muralLimpioActivado && (
                 <button
                     type="button"
                     className="mural-clean-button"
@@ -211,7 +203,13 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
                     >
                         ✕
                     </button>
-                    Y tú, ¿cómo sacas al mundo todo eso que llevas dentro?
+                    <div>
+                        <p>   Mirar este muro es entender que nadie está solo en su caos. Aquí, las palabras
+                            de extraños se vuelven compañía. <br />
+                            He guardado un pequeño rincón en blanco para ti,
+                            porque sé que tú también tienes una historia que no has sabido cómo contar.<br />
+                            Toma el pincel por un segundo y escribe eso que nunca te has dicho en voz alta.</p>
+                    </div>
                 </div>
             )}
 
@@ -225,18 +223,18 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
                         ) : (
                             notas.map((nota) => {
                                 return (
-                                <article
-                                    key={nota.id}
-                                    className="mural-message"
-                                >
-                                    <p className="mural-message__text">{nota.text}</p>
-                                    <time className="mural-message__time" dateTime={nota.created_at}>
-                                        {new Date(nota.created_at).toLocaleString('es-MX', {
-                                            dateStyle: 'short',
-                                            timeStyle: 'short',
-                                        })}
-                                    </time>
-                                </article>
+                                    <article
+                                        key={nota.id}
+                                        className="mural-message"
+                                    >
+                                        <p className="mural-message__text">{nota.text}</p>
+                                        <time className="mural-message__time" dateTime={nota.created_at}>
+                                            {new Date(nota.created_at).toLocaleString('es-MX', {
+                                                dateStyle: 'short',
+                                                timeStyle: 'short',
+                                            })}
+                                        </time>
+                                    </article>
                                 );
                             })
                         )}

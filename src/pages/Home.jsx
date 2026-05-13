@@ -21,13 +21,7 @@ function Home({ onStartJourney }) {
 
             <div className="home-screen__content">
                 <h1 className="home-screen__title">APRENDA A VIVIR CON ESO</h1>
-                <button
-                    type="button"
-                    className="home-screen__button"
-                    onClick={() => handleEnterJourney('/atico')}
-                >
-                    Ático
-                </button>
+                
                 <button
                     type="button"
                     className="home-screen__button"
