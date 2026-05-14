@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import SceneContainer from '../components/SceneContainer';
 import fondoHabitacion from '../assets/habitacion.png';
 
@@ -51,4 +52,4 @@ function Sotano() {
     );
 }
 
-export default Sotano;
+export default memo(Sotano);

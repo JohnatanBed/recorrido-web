@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import fondoPuerta from '../assets/puerta.png';
 import SceneContainer from '../components/SceneContainer';
@@ -100,7 +100,9 @@ function Puerta({ onVisit }) {
     }
 
     return (
-        <SceneContainer backgroundImage={fondoPuerta}>
+        <SceneContainer 
+        className='fondo-global'
+        backgroundImage={fondoPuerta}>
             {mensajeActivo && !secuenciaIniciada && !mensajeHotspot && !mensajeSegundoHotspot && (
                 <div className="puerta-mensaje-overlay">
                     <p className="puerta-mensaje-texto">{mensajeActivo}</p>
@@ -165,4 +167,4 @@ function Puerta({ onVisit }) {
     );
 }
 
-export default Puerta;
+export default memo(Puerta);

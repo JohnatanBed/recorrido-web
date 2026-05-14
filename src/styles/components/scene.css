@@ -1,8 +1,30 @@
+/* ===== TRANSICIONES DE ESCENA ===== */
+/* Contenedor de escena con soporte para fade-in */
+.fondo-global {
+    animation: scene-fade-in 0.3s ease-out forwards;
+}
+
+@keyframes scene-fade-in {
+    from {
+        opacity: 0.95;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Contenedor de contenido interactivo - evitar cambios abruptos */
+.fondo-global > * {
+    will-change: auto;
+    transform: translateZ(0);
+}
+
 /* ===== SCENE BUTTONS (comunes a todas las escenas) ===== */
 .scene-back-button {
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
+    z-index: 10;
     border: 0;
     border-radius: 999px;
     padding: 0.7rem 1rem;
@@ -24,7 +46,7 @@
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    z-index: 2;
+    z-index: 10;
     border: 0;
     border-radius: 999px;
     padding: 0.7rem 1rem;
@@ -77,7 +99,7 @@
 
 /* Botón para iniciar test - posicionable mediante estilos inline */
 .start-test-button {
-    z-index: 3;
+    z-index: 10;
     border: 0;
     border-radius: 999px;
     padding: 0.7rem 1rem;
