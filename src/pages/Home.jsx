@@ -14,10 +14,16 @@ function Home({ onStartJourney }) {
 
     return (
         <section className="home-screen">
-            <div
-                className="fondo-global fondo-global-blur home-screen__background"
-                style={{ backgroundImage: `url(${fondoHome})` }}
-            />
+            <div className="fondo-global fondo-global-blur home-screen__background">
+                {/* Imagen de fondo usando <img> en lugar de backgroundImage CSS */}
+                <img
+                    src={fondoHome}
+                    alt="Home background"
+                    className="fondo-global__image"
+                    draggable={false}
+                    loading="eager"
+                />
+            </div>
 
             <div className="home-screen__content">
                 <h1 className="home-screen__title">APRENDA A VIVIR CON ESO</h1>

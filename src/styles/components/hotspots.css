@@ -1,6 +1,7 @@
 /* ===== HOTSPOTS (Habitacion) ===== */
 .hotspot-habitacion {
     position: absolute;
+    z-index: 5;
     transform: translate(-50%, -50%);
     background-color: white;
     border: 0;
@@ -47,6 +48,7 @@
 /* ===== HOTSPOT CAMA ===== */
 .hotspot-cama {
     position: absolute;
+    z-index: 5;
     transform: translate(-50%, -50%);
     background-color: white;
     border: 0;
@@ -77,6 +79,7 @@
     top: 66%;
     left: 19%;
     position: absolute;
+    z-index: 5;
     background-color: white;
     width: 18px;
     height: 18px;

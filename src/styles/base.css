@@ -21,17 +21,43 @@ body {
 button,
 input,
 textarea,
-select {
+select {   
     font: inherit;
 }
 
 /* ===== ESTILOS GLOBALES ===== */
 .fondo-global {
+    position: relative;
     width: 100%;
-    height: 100vh;
-    background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
+    height: 100dvh;
+    overflow: hidden;
+    background-color: #000;
+    
+    /* Optimizaciones de rendering para evitar flicker */
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Imagen de fondo con fade-in suave - usando <img> absoluta */
+.fondo-global__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    animation: fade-in 0.4s ease-in-out forwards;
+    will-change: opacity;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .fondo-global-blur {

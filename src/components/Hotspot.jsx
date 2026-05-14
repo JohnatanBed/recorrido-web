@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 function Hotspot({ 
     className, 
     position = { top: '50%', left: '50%' }, 
@@ -20,4 +22,4 @@ function Hotspot({
     );
 }
 
-export default Hotspot;
+export default memo(Hotspot);

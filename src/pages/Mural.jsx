@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import fondoMuralInicial from '../assets/mural-tableta.png';
 import fondoMuralFinal from '../assets/mural.png';
@@ -148,9 +148,17 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
     return (
         <div
             className="fondo-global"
-            style={{
-                backgroundImage: `url(${fase === 'principal' ? fondoMuralInicial : (muralLimpioActivado ? fondoMuralLimpio : fondoMuralFinal)})`
-            }}>
+            key={fase}
+        >
+            {/* Imagen de fondo - nueva estrategia con <img> en lugar de backgroundImage */}
+            <img
+                src={fase === 'principal' ? fondoMuralInicial : (muralLimpioActivado ? fondoMuralLimpio : fondoMuralFinal)}
+                alt="Mural background"
+                className="fondo-global__image"
+                draggable={false}
+                loading="eager"
+            />
+            
             <button
                 type="button"
                 className="scene-back-button"
@@ -328,4 +336,4 @@ function Mural({ onVisit, pauseGlobalAudio, resumeGlobalAudio }) {
     );
 }
 
-export default Mural;
+export default memo(Mural);

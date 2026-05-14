@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function StateHotspot({ 
@@ -32,4 +33,4 @@ function StateHotspot({
     );
 }
 
-export default StateHotspot;
+export default memo(StateHotspot);

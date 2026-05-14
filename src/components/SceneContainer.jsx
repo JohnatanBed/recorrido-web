@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 
@@ -13,8 +14,8 @@ function SceneContainer({
     menuContent = 'Menú principal',
 }) {
     const navigate = useNavigate();
-
-    const { pathname } = useLocation();
+    const location = useLocation();
+    const { pathname } = location;
 
     const handleBack = () => {
         if (onBackClick) {
@@ -29,8 +30,18 @@ function SceneContainer({
     return (
         <div
             className={`fondo-global ${className}`}
-            style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : undefined}
+            key={pathname}
         >
+            {backgroundImage && (
+                <img
+                    src={backgroundImage}
+                    alt="Scene background"
+                    className="fondo-global__image"
+                    draggable={false}
+                    loading="eager"
+                />
+            )}
+
             {shouldShowBack && (
                 <button
                     type="button"
@@ -57,4 +68,4 @@ function SceneContainer({
     );
 }
 
-export default SceneContainer;
+export default memo(SceneContainer);

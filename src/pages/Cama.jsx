@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import fondoCama from '../assets/cama.png';
 import { SLIDES } from '../constants/slides';
 import SceneContainer from '../components/SceneContainer';
@@ -22,7 +22,9 @@ function Cama({ onVisit, onStartAudio, pauseGlobalAudio, resumeGlobalAudio }) {
     }, [onVisit]);
 
     return (
-        <SceneContainer backgroundImage={fondoCama}>
+        <SceneContainer
+        className="fondo-global"
+        backgroundImage={fondoCama}>
             <Hotspot
                 className="hotspot-cama"
                 position={{ top: '29%', left: '53.5%' }}
@@ -43,4 +45,4 @@ function Cama({ onVisit, onStartAudio, pauseGlobalAudio, resumeGlobalAudio }) {
     );
 }
 
-export default Cama;
+export default memo(Cama);

@@ -10,6 +10,7 @@ function Habitacion({ hotspots, unlockedHotspotIds, visitedHotspots }) {
 
     return (
         <SceneContainer 
+        className="fondo-global"
             backgroundImage={fondoHabitacion}
             onBackClick={() => navigate('/')}
         >
