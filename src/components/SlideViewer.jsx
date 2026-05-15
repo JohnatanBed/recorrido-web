@@ -164,7 +164,7 @@ function SlideViewer({
                         />
                     )}
                     {showLoading && <div className="slide-viewer-loading">Cargando slide...</div>}
-                    {audioSrc && <audio ref={audioRef} src={audioSrc} />}
+                    {audioSrc && <audio ref={audioRef} src={audioSrc} preload="auto" />}
                 </div>
 
                 <button
