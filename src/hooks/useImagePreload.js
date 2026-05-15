@@ -1,36 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-
-const preloadImage = (src) => {
-    return new Promise((resolve) => {
-        const image = new Image();
-        let settled = false;
-
-        const done = () => {
-            if (settled) {
-                return;
-            }
-
-            settled = true;
-            resolve();
-        };
-
-        image.onload = () => {
-            if (typeof image.decode === 'function') {
-                image.decode().catch(() => undefined).finally(done);
-                return;
-            }
-
-            done();
-        };
-
-        image.onerror = done;
-        image.src = src;
-
-        if (image.complete) {
-            done();
-        }
-    });
-};
+import { preloadImage } from '../lib/preloadAssets';
 
 function useImagePreload(imageUrls) {
     const normalizedUrls = useMemo(() => imageUrls.filter(Boolean), [imageUrls]);
@@ -41,8 +10,15 @@ function useImagePreload(imageUrls) {
         let isMounted = true;
 
         if (uniqueUrls.length === 0) {
-            return undefined;
+            if (isMounted) {
+                setIsReady(true);
+            }
+            return () => {
+                isMounted = false;
+            };
         }
+
+        setIsReady(false);
 
         Promise.all(uniqueUrls.map((url) => preloadImage(url))).finally(() => {
             if (isMounted) {

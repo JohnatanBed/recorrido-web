@@ -8,7 +8,9 @@ import Cama from './pages/Cama';
 import Puerta from './pages/Puerta';
 import Sotano from './pages/Sotano';
 import { HOTSPOTS } from './constants/hotspots';
+import { SLIDES } from './constants/slides';
 import useImagePreload from './hooks/useImagePreload';
+import { preloadAssets } from './lib/preloadAssets';
 import fondoHabitacion from './assets/habitacion.png';
 import fondoComputadora from './assets/computadora.png';
 import fondoMuralInicial from './assets/mural-tableta.png';
@@ -18,6 +20,12 @@ import fondoCama from './assets/cama.png';
 import fondoPuerta from './assets/puerta.png';
 import fondoSotano from './assets/sotano.png';
 import SplashScreen from './components/SplashScreen';
+
+const SPLASH_IMAGES = ['/recomendacion.png', '/disclaimer.png', '/carta.png'];
+const CLICK_ICON_SRC = '/click.png';
+const GLOBAL_AUDIO_SRC = '/Vivirconeso.mp3';
+const IMAGE_EXT_RE = /\.(png|jpe?g|webp|gif|avif)$/i;
+const VIDEO_EXT_RE = /\.(mp4|webm|ogg|mov)$/i;
 
 const profileImages = [
   '/perfiles/alexis comleto.png',
@@ -32,6 +40,40 @@ function App() {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const audioRef = useRef(null);
   const location = useLocation();
+  const slideAssets = useMemo(() => {
+    const images = [];
+    const videos = [];
+    const audios = [];
+
+    SLIDES.forEach((slide) => {
+      if (typeof slide === 'string') {
+        if (VIDEO_EXT_RE.test(slide)) {
+          videos.push(slide);
+        } else if (IMAGE_EXT_RE.test(slide)) {
+          images.push(slide);
+        }
+        return;
+      }
+
+      if (slide?.src) {
+        if (VIDEO_EXT_RE.test(slide.src)) {
+          videos.push(slide.src);
+        } else if (IMAGE_EXT_RE.test(slide.src)) {
+          images.push(slide.src);
+        }
+      }
+
+      if (slide?.audioSrc) {
+        audios.push(slide.audioSrc);
+      }
+    });
+
+    return {
+      images: [...new Set(images)],
+      videos: [...new Set(videos)],
+      audios: [...new Set(audios)],
+    };
+  }, []);
   const criticalSceneAssets = useMemo(
     () => [
       fondoHabitacion,
@@ -57,6 +99,31 @@ function App() {
   const showAudioToggle = !['/', '/sotano'].includes(location.pathname);
 
   const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    preloadAssets(
+      {
+        images: [...SPLASH_IMAGES, CLICK_ICON_SRC],
+        audios: [GLOBAL_AUDIO_SRC],
+      },
+      { strategy: 'immediate', concurrency: 3 }
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!isAssetsReady) {
+      return;
+    }
+
+    preloadAssets(
+      {
+        images: slideAssets.images,
+        videos: slideAssets.videos,
+        audios: slideAssets.audios,
+      },
+      { strategy: 'idle', concurrency: 2 }
+    );
+  }, [isAssetsReady, slideAssets]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -164,7 +231,7 @@ function App() {
 
   return (
     <>
-      <audio ref={audioRef} src="/Vivirconeso.mp3" hidden aria-hidden="true" />
+      <audio ref={audioRef} src={GLOBAL_AUDIO_SRC} hidden aria-hidden="true" />
 
       {showAudioToggle && (
         <button
